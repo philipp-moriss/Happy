@@ -79,24 +79,13 @@ const Button = ({
 
   const buttonStyles = StyleSheet.flatten([
     {
-      height: 58,
+      height: 56,
       width: "100%",
-      color: colors.text02,
+      color: colors.text04,
       alignItems: "center",
       justifyContent: "center",
-      borderRadius: rounded ? sizes.s : sizes.buttonRadius,
-      ...(bgColor && { backgroundColor: bgColor }),
-      /*    ...(shadow &&
-            bgColor !== "transparent" && {
-              shadowColor: colors.text01,
-              shadowOffset: {
-                width: sizes.shadowOffsetWidth,
-                height: sizes.shadowOffsetHeight,
-              },
-              shadowOpacity: sizes.shadowOpacity,
-              shadowRadius: sizes.shadowRadius,
-              elevation: sizes.elevation,
-            }),*/
+      borderRadius: rounded ? sizes.s : 16,
+      backgroundColor: disabled ? colors.bg02 : bgColor,
       ...(row && { flexDirection: "row" }),
       ...(radius && { borderRadius: radius }),
       ...(flex !== undefined && { flex }),
@@ -118,24 +107,26 @@ const Button = ({
       ...(justify && { justifyContent: justify }),
       ...(height && { height }),
       ...(width && { width }),
-      ...(typeof outlined === "boolean" && {
-        borderWidth: sizes.buttonBorder,
-        borderColor: bgColor,
-        backgroundColor: "transparent",
-      }),
-      ...(typeof outlined === "string" && {
-        borderWidth: sizes.buttonBorder,
-        borderColor: outlined,
-      }),
-      ...(disabled && {
-        opacity: 1,
-        backgroundColor: "#EFEFEF",
-      }),
       ...(position && { position }),
       ...(right !== undefined && { right }),
       ...(left !== undefined && { left }),
       ...(top !== undefined && { top }),
       ...(bottom !== undefined && { bottom }),
+      ...(outlined && {
+        backgroundColor: "transparent",
+        borderWidth: 1,
+        borderColor: bgColor,
+      }),
+      ...(shadow && {
+        shadowColor: colors.text01,
+        shadowOffset: {
+          width: sizes.shadowOffsetWidth,
+          height: sizes.shadowOffsetHeight,
+        },
+        shadowOpacity: sizes.shadowOpacity,
+        shadowRadius: sizes.shadowRadius,
+        elevation: sizes.elevation,
+      }),
     },
     style,
   ]) as ViewStyle;

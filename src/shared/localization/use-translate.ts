@@ -3,7 +3,6 @@ import { Language } from "./i18n";
 import { I18nManager } from "react-native";
 import { getLanguage, setLanguage } from "./helpers";
 import { useCallback } from "react";
-// import * as Updates from "expo-updates";
 
 type languageItem = {
   label: string;

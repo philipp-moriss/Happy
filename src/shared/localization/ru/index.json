@@ -1,6 +1,50 @@
 {
-  "Main": {
-    "test": "б"
+  "status": {
+    "success": "успешно",
+    "pending": "в процессе",
+    "error": "ошибка"
   },
-  "test": "рууский"
+  "profile": {
+    "title": "Профиль",
+    "user": "Пользователь",
+    "stats": {
+      "total": "Всего задач",
+      "completed": "Выполнено",
+      "inProgress": "В процессе"
+    },
+    "menu": {
+      "settings": "Настройки",
+      "notifications": "Уведомления",
+      "help": "Помощь",
+      "about": "О приложении",
+      "language": "Язык"
+    },
+    "logout": "Выйти",
+    "logoutConfirm": {
+      "title": "Выход",
+      "message": "Вы уверены, что хотите выйти?",
+      "cancel": "Отмена",
+      "confirm": "Выйти"
+    },
+    "avatar": {
+      "error": "Ошибка",
+      "permission": "Необходимо разрешение для доступа к галерее"
+    }
+  },
+  "settings": {
+    "title": "Настройки",
+    "language": "Язык",
+    "notifications": "Уведомления",
+    "theme": "Тема",
+    "about": "О приложении"
+  },
+  "categories": {
+    "charity": "Благотворительность",
+    "education": "Образование",
+    "health": "Здоровье",
+    "travel": "Путешествия",
+    "entertainment": "Развлечения",
+    "sport": "Спорт",
+    "other": "Другое"
+  }
 }

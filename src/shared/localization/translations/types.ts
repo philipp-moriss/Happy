@@ -1,0 +1,26 @@
+export type TranslationKeys = {
+  'status.success': string;
+  'status.pending': string;
+  'status.error': string;
+  'profile.title': string;
+  'profile.user': string;
+  'profile.logout': string;
+  'profile.logoutConfirm.title': string;
+  'profile.logoutConfirm.message': string;
+  'profile.logoutConfirm.cancel': string;
+  'profile.logoutConfirm.confirm': string;
+  'profile.avatar.error': string;
+  'profile.avatar.permission': string;
+  'profile.stats.total': string;
+  'profile.stats.completed': string;
+  'profile.stats.inProgress': string;
+  'profile.menu.settings': string;
+  'profile.menu.notifications': string;
+  'profile.menu.help': string;
+  'profile.menu.about': string;
+  'settings.title': string;
+  'settings.language': string;
+  'settings.notifications': string;
+  'settings.theme': string;
+  'settings.privacy': string;
+}; 

@@ -1,8 +1,6 @@
-import React from "react";
-import { RootStack } from "./router/root-stack";
+import React from 'react';
+import { AppNavigator } from './router/app-navigator';
 
-export const App = () => {
-  return (
-    <RootStack />
-  );
-};
+export default function App() {
+  return <AppNavigator />;
+}

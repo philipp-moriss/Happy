@@ -5,6 +5,8 @@ import { I18nextProvider } from "react-i18next";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Toaster } from "sonner-native";
+import React, { createContext, useContext } from 'react';
+import { RootStore } from './entity/root-store';
 
 import imgSuccess from "./assets/images/success.jpg";
 import imgWarning from "./assets/images/warning.jpg";
@@ -12,10 +14,30 @@ import { LIGHT } from "./shared/hooks/use-theme/light";
 import { ThemeProvider } from "./shared/hooks/use-theme/use-theme";
 import Image from "./shared/components/image";
 import i18n from "./shared/localization/i18n";
-import { App } from ".";
+import App from ".";
 import { useFonts } from "expo-font";
 
 SplashScreen.preventAutoHideAsync();
+
+const rootStore = new RootStore();
+
+const StoreContext = createContext<RootStore>(rootStore);
+
+export function StoreProvider({ children }: { children: React.ReactNode }) {
+  return (
+    <StoreContext.Provider value={rootStore}>
+      {children}
+    </StoreContext.Provider>
+  );
+}
+
+export function useStore() {
+  const context = useContext(StoreContext);
+  if (!context) {
+    throw new Error('useStore must be used within a StoreProvider');
+  }
+  return context;
+}
 
 export default function Provider () {
 
@@ -65,7 +87,7 @@ export default function Provider () {
                   justifyContent: "center",
                 },
                 titleStyle: {
-                  color: "#363636",
+                  color: String(LIGHT.colors.text01),
                   fontSize: 16,
                   lineHeight: 20,
                   fontFamily: "FirstNeueMedium",
@@ -73,13 +95,13 @@ export default function Provider () {
                 descriptionStyle: {
                   fontSize: 12,
                   lineHeight: 14,
-                  color: "#8E8E8E",
+                  color: String(LIGHT.colors.text02),
                   fontFamily: "FirstNeueRegular",
                 },
               }}
               style={{
                 zIndex: 9999,
-                backgroundColor: "white",
+                backgroundColor: String(LIGHT.colors.bg02),
                 borderRadius: 22,
                 width: "100%",
                 paddingVertical: 16,
@@ -113,6 +135,8 @@ const navigationTheme = {
     ...DefaultTheme.colors,
     border: "rgba(0,0,0,0)",
     text: String(LIGHT.colors.text01),
-    background: String(LIGHT.colors.bg03),
+    background: String(LIGHT.colors.bg01),
+    card: String(LIGHT.colors.bg02),
+    primary: String(LIGHT.colors.primary),
   },
 };

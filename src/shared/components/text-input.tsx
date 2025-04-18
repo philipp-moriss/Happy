@@ -61,7 +61,7 @@ const TextInputs: React.FC<ITextInputProps> = ({
     return {
       fontSize: isPressed ? 12 : 16,
       position: "absolute",
-      color: error ? colors.supportRed : colors.text05,
+      color: error ? colors.red : colors.text05,
       transform: [
         {
           translateY: withTiming(isPressed ? -19 : 0, {
@@ -145,37 +145,41 @@ const styles = StyleSheet.create({
   },
   container: {
     borderWidth: 1,
-    height: 54,
+    height: 56,
     paddingHorizontal: 16,
     flexDirection: "row",
     alignItems: "center",
     borderColor: "#EFEFEF",
     borderRadius: 16,
+    backgroundColor: "#FFFFFF",
   },
   containerActive: {
-    borderColor: "#888",
+    borderColor: "#FFB800",
   },
   isError: {
-    borderColor: "red",
+    borderColor: "#FF6B6B",
   },
   isErrorText: {
-    color: "red",
+    color: "#FF6B6B",
+    fontSize: 12,
+    marginTop: 4,
   },
   label: {
-    fontSize: 16,
-    fontWeight: "400",
-    color: "#8B97A1",
+    fontSize: 14,
+    fontWeight: "500",
+    color: "#666666",
   },
   input: {
     fontSize: 16,
     flex: 1,
-    color: "#000",
+    color: "#333333",
   },
   inputCentered: {
     // textAlign: "center",
   },
   isDisabled: {
     opacity: 0.5,
+    backgroundColor: "#F5F5F5",
   },
 });
 

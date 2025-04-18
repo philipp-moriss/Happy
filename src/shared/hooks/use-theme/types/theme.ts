@@ -76,7 +76,7 @@ export interface ThemeColors {
   orange: ColorValue;
   supportGreen: ColorValue;
   supportGray: ColorValue;
-  supportRed: ColorValue;
+  red: ColorValue;
 }
 
 export interface ThemeGradients {

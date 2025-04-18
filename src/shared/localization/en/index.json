@@ -1,6 +1,50 @@
 {
-  "Main": {
-    "test": "a"
+  "status": {
+    "success": "success",
+    "pending": "pending",
+    "error": "error"
   },
-  "test": "english"
+  "profile": {
+    "title": "Profile",
+    "user": "User",
+    "stats": {
+      "total": "Total Tasks",
+      "completed": "Completed",
+      "inProgress": "In Progress"
+    },
+    "menu": {
+      "settings": "Settings",
+      "notifications": "Notifications",
+      "help": "Help",
+      "about": "About",
+      "language": "Language"
+    },
+    "logout": "Logout",
+    "logoutConfirm": {
+      "title": "Logout",
+      "message": "Are you sure you want to logout?",
+      "cancel": "Cancel",
+      "confirm": "Logout"
+    },
+    "avatar": {
+      "error": "Error",
+      "permission": "Gallery access permission is required"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "notifications": "Notifications",
+    "theme": "Theme",
+    "about": "About"
+  },
+  "categories": {
+    "charity": "Charity",
+    "education": "Education",
+    "health": "Health",
+    "travel": "Travel",
+    "entertainment": "Entertainment",
+    "sport": "Sport",
+    "other": "Other"
+  }
 }

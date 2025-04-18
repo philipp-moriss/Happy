@@ -12,3 +12,9 @@ declare module "i18next" {
     };
   }
 }
+
+declare module "react-i18next" {
+  interface UseTranslationResponse<N extends keyof CustomTypeOptions["resources"] = undefined> {
+    t: (key: keyof MainTranslate | `${string}.${string}`) => string;
+  }
+}

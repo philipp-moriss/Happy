@@ -42,7 +42,7 @@ export type LinkProps = {
   orange?: boolean;
   supportGreen?: boolean;
   supportGray?: boolean;
-  supportRed?: boolean;
+  red?: boolean;
 };
 
 export interface IBlockProps
@@ -74,7 +74,7 @@ export interface IBlockProps
   orange?: boolean;
   supportGreen?: boolean;
   supportGray?: boolean;
-  supportRed?: boolean;
+  red?: boolean;
   /**
    * id for testID & accesibilityLabel
    */
@@ -245,7 +245,7 @@ export interface ITextProps extends TextProps, ISpacing {
   orange?: boolean;
   supportGreen?: boolean;
   supportGray?: boolean;
-  supportRed?: boolean;
+  red?: boolean;
   /**
    * id for testID & accesibilityLabel
    */
@@ -642,6 +642,6 @@ export interface IButtonProps extends TouchableOpacityProps, ISpacing {
   orange?: boolean;
   supportGreen?: boolean;
   supportGray?: boolean;
-  supportRed?: boolean;
+  red?: boolean;
   bg01?: boolean;
 }
