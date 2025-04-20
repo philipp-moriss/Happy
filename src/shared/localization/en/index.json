@@ -4,6 +4,31 @@
     "pending": "pending",
     "error": "error"
   },
+  "home": {
+    "title": "Home",
+    "welcome": "Welcome",
+    "getStarted": "Get Started"
+  },
+  "tasks": {
+    "title": "Tasks",
+    "filters": {
+      "all": "All",
+      "active": "Active",
+      "completed": "Completed"
+    },
+    "noEndDate": "No due date",
+    "addTask": "Add Task",
+    "form": {
+      "title": "Edit Goal",
+      "name": "Name",
+      "namePlaceholder": "Charity",
+      "description": "Description",
+      "descriptionPlaceholder": "To the cat and dog shelter \"Dobrodel\"",
+      "category": "Category",
+      "submit": "Add",
+      "cancel": "Cancel"
+    }
+  },
   "profile": {
     "title": "Profile",
     "user": "User",
@@ -38,7 +63,24 @@
     "theme": "Theme",
     "about": "About"
   },
+  "statistics": {
+    "title": "Statistics",
+    "stats": {
+      "total": "Total Tasks",
+      "completed": "Completed",
+      "inProgress": "In Progress"
+    },
+    "categories": "Categories Distribution",
+    "activity": "Activity",
+    "trends": "Trends",
+    "completionRate": "Completion Rate",
+    "activeTasks": "Active Tasks",
+    "noData": "No data to display"
+  },
   "categories": {
+    "hedonic": "hedonic",
+    "eudaimonic": "eudaimonic",
+    "psychological": "psychological richness",
     "charity": "Charity",
     "education": "Education",
     "health": "Health",
@@ -46,5 +88,10 @@
     "entertainment": "Entertainment",
     "sport": "Sport",
     "other": "Other"
+  },
+  "tabBar": {
+    "tasks": "Tasks",
+    "statistics": "Statistics",
+    "profile": "Profile"
   }
 }

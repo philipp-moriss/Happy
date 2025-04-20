@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { observer } from 'mobx-react-lite';
 import { Ionicons } from '@expo/vector-icons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useTranslation } from 'react-i18next';
 
 import { useStore } from '../../provider';
 import Typography from '../../shared/components/typography';
@@ -33,17 +34,18 @@ interface Styles {
   deleteButton: ViewStyle;
 }
 
-const filterTabs: TabItem[] = [
-  { key: 'all', title: 'Все', icon: 'apps-outline' },
-  { key: 'active', title: 'Активные', icon: 'time-outline' },
-  { key: 'completed', title: 'Завершенные', icon: 'checkmark-circle-outline' },
-];
-
 export const TasksScreen = observer(() => {
   const navigation = useNavigation<NavigationProp>();
   const { taskStore } = useStore();
   const colors = useTheme().colors;
   const [filter, setFilter] = useState<FilterType>('all');
+  const { t } = useTranslation();
+
+  const filterTabs: TabItem[] = [
+    { key: 'all', title: t('tasks.filters.all'), icon: 'apps-outline' },
+    { key: 'active', title: t('tasks.filters.active'), icon: 'time-outline' },
+    { key: 'completed', title: t('tasks.filters.completed'), icon: 'checkmark-circle-outline' },
+  ];
 
   useEffect(() => {
     taskStore.fetchTasks();
@@ -110,7 +112,7 @@ export const TasksScreen = observer(() => {
               {item.description}
             </Typography>
             <Typography style={dateStyle}>
-              {item.endDate ? new Date(item.endDate).toLocaleDateString() : 'Бессрочно'}
+              {item.endDate ? new Date(item.endDate).toLocaleDateString() : t('tasks.noEndDate')}
             </Typography>
           </View>
         </TouchableOpacity>
@@ -129,7 +131,7 @@ export const TasksScreen = observer(() => {
       <View style={styles.container}>
         <View style={styles.header}>
           <Typography style={StyleSheet.flatten(styles.title)}>
-            Задачи
+            {t('tasks.title')}
           </Typography>
           <TouchableOpacity
             style={[styles.addButton, { backgroundColor: colors.primary }]}

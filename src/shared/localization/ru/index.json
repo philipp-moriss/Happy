@@ -4,6 +4,31 @@
     "pending": "в процессе",
     "error": "ошибка"
   },
+  "home": {
+    "title": "Главная",
+    "welcome": "Добро пожаловать",
+    "getStarted": "Начать"
+  },
+  "tasks": {
+    "title": "Задачи",
+    "filters": {
+      "all": "Все",
+      "active": "Активные",
+      "completed": "Завершенные"
+    },
+    "noEndDate": "Бессрочно",
+    "addTask": "Добавить задачу",
+    "form": {
+      "title": "Редактирование цели",
+      "name": "Название",
+      "namePlaceholder": "Благотворительность",
+      "description": "Описание",
+      "descriptionPlaceholder": "В приют кошек и собак \"Добродел\"",
+      "category": "Категория",
+      "submit": "Добавить",
+      "cancel": "Отмена"
+    }
+  },
   "profile": {
     "title": "Профиль",
     "user": "Пользователь",
@@ -38,7 +63,24 @@
     "theme": "Тема",
     "about": "О приложении"
   },
+  "statistics": {
+    "title": "Статистика",
+    "stats": {
+      "total": "Всего задач",
+      "completed": "Выполнено",
+      "inProgress": "В процессе"
+    },
+    "categories": "Распределение по категориям",
+    "activity": "Активность",
+    "trends": "Тренды",
+    "completionRate": "Процент выполнения",
+    "activeTasks": "Активные задачи",
+    "noData": "Нет данных для отображения"
+  },
   "categories": {
+    "hedonic": "гедонистическая",
+    "eudaimonic": "эвдемоническая",
+    "psychological": "психологическое богадтсво",
     "charity": "Благотворительность",
     "education": "Образование",
     "health": "Здоровье",
@@ -46,5 +88,10 @@
     "entertainment": "Развлечения",
     "sport": "Спорт",
     "other": "Другое"
+  },
+  "tabBar": {
+    "tasks": "Задачи",
+    "statistics": "Статистика",
+    "profile": "Профиль"
   }
 }

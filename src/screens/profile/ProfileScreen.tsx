@@ -92,13 +92,13 @@ export const ProfileScreen = observer(() => {
   const menuItems = [
     {
       id: 'settings',
-      title: 'Настройки',
+      title: translate('profile.menu.settings'),
       onPress: () => navigation.navigate('Settings'),
       icon: 'settings'
     },
     {
       id: 'notifications',
-      title: 'Уведомления',
+      title: translate('profile.menu.notifications'),
       onPress: () => {
         // TODO: Implement notifications logic
       },
@@ -106,7 +106,7 @@ export const ProfileScreen = observer(() => {
     },
     {
       id: 'help',
-      title: 'Помощь',
+      title: translate('profile.menu.help'),
       onPress: () => {
         // TODO: Implement help logic
       },
@@ -114,7 +114,7 @@ export const ProfileScreen = observer(() => {
     },
     {
       id: 'about',
-      title: 'О приложении',
+      title: translate('profile.menu.about'),
       onPress: () => {
         // TODO: Implement about logic
       },
@@ -138,7 +138,7 @@ export const ProfileScreen = observer(() => {
           </TouchableOpacity>
           <View style={styles.userInfo}>
             <Typography style={StyleSheet.flatten([styles.userName, { color: colors.text01 }])}>
-              Иван Иванов
+              {translate('profile.user')}
             </Typography>
             <Typography style={StyleSheet.flatten([styles.userEmail, { color: colors.text02 }])}>
               ivan@example.com
@@ -177,6 +177,7 @@ const styles = StyleSheet.create({
   },
   header: {
     padding: 20,
+    borderRadius: 10,
   },
   avatarContainer: {
     position: 'relative',
@@ -210,6 +211,8 @@ const styles = StyleSheet.create({
   },
   statisticsContainer: {
     marginBottom: 30,
+    flexDirection: "row",
+    borderRadius: 10,
   },
   statisticsTitle: {
     fontSize: 20,

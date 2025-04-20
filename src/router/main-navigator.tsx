@@ -1,13 +1,16 @@
-import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { TasksNavigator } from './tasks-navigator';
-import { ProfileNavigator } from './profile-navigator';
-import { StatisticsScreen } from '../screens/statistics/StatisticsScreen';
-import { TabBar } from '../shared/components/tab-bar';
+import React from "react";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { TasksNavigator } from "./tasks-navigator";
+import { ProfileNavigator } from "./profile-navigator";
+import { StatisticsScreen } from "../screens/statistics/StatisticsScreen";
+import { TabBar } from "../shared/components/tab-bar";
+import useTranslate from "../shared/localization/use-translate";
 
 const Tab = createBottomTabNavigator();
 
 export function MainNavigator() {
+  const { translate } = useTranslate();
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -15,9 +18,30 @@ export function MainNavigator() {
       }}
       tabBar={(props) => <TabBar {...props} />}
     >
-      <Tab.Screen name="Tasks" component={TasksNavigator} />
-      <Tab.Screen name="Statistics" component={StatisticsScreen} />
-      <Tab.Screen name="Profile" component={ProfileNavigator} />
+      <Tab.Screen
+        name="Tasks"
+        component={TasksNavigator}
+        options={{
+          title: translate("tabBar.tasks"),
+          tabBarLabel: translate("tabBar.tasks"),
+        }}
+      />
+      <Tab.Screen
+        name="Statistics"
+        component={StatisticsScreen}
+        options={{
+          title: translate("tabBar.statistics"),
+          tabBarLabel: translate("tabBar.statistics"),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileNavigator}
+        options={{
+          title: translate("tabBar.profile"),
+          tabBarLabel: translate("tabBar.profile"),
+        }}
+      />
     </Tab.Navigator>
   );
-} 
+}

@@ -4,19 +4,17 @@ import Typography from './typography';
 import useTheme from '../hooks/use-theme/use-theme';
 import useTranslate from '../localization/use-translate';
 
-const CATEGORIES = [
-  'charity',
-  'education',
-  'health',
-  'travel',
-  'entertainment',
-  'sport',
-  'other'
+type Category = 'hedonic' | 'eudaimonic' | 'psychological';
+
+const CATEGORIES: Category[] = [
+  'hedonic',
+  'eudaimonic',
+  'psychological',
 ];
 
 interface CategoryChipsProps {
-  selectedCategory: string;
-  onSelectCategory: (category: string) => void;
+  selectedCategory: Category;
+  onSelectCategory: (category: Category) => void;
 }
 
 export const CategoryChips: React.FC<CategoryChipsProps> = ({
@@ -55,7 +53,7 @@ export const CategoryChips: React.FC<CategoryChipsProps> = ({
               }
             ]) as TextStyle}
           >
-            {translate(`categories.${category}`)}
+            {translate(`categories.${category}` as const)}
           </Typography>
         </TouchableOpacity>
       ))}

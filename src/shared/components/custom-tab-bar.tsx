@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet, ViewStyle, Platform } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, ViewStyle, Platform, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import useTheme from '../hooks/use-theme/use-theme';
+import { useTranslation } from 'react-i18next';
+import { useTheme } from '@react-navigation/native';
 
 interface CustomTabBarProps {
   state: any;
@@ -10,122 +11,77 @@ interface CustomTabBarProps {
   navigation: any;
 }
 
-export const CustomTabBar: React.FC<CustomTabBarProps> = ({ state, descriptors, navigation }) => {
+export function CustomTabBar({ state, descriptors, navigation }: CustomTabBarProps) {
+  const { t } = useTranslation();
+  const { colors } = useTheme();
   const insets = useSafeAreaInsets();
-  const { colors, sizes } = useTheme();
 
   return (
-    <View 
-      style={[
-        styles.container, 
-        { 
-          backgroundColor: colors.bg01,
-          paddingBottom: insets.bottom,
-          borderTopColor: colors.bg03,
-          height: 60 + insets.bottom,
-        }
-      ]}
-    >
+    <View style={[styles.container, { backgroundColor: colors.card, paddingBottom: insets.bottom }]}>
       {state.routes.map((route: any, index: number) => {
         const { options } = descriptors[route.key];
-        const label = options.tabBarLabel || options.title || route.name;
         const isFocused = state.index === index;
 
-        const onPress = () => {
-          const event = navigation.emit({
-            type: 'tabPress',
-            target: route.key,
-            canPreventDefault: true,
-          });
-
-          if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate(route.name);
+        const getIconName = (routeName: string) => {
+          switch (routeName) {
+            case 'Tasks':
+              return isFocused ? 'list' : 'list-outline';
+            case 'Statistics':
+              return isFocused ? 'stats-chart' : 'stats-chart-outline';
+            case 'Profile':
+              return isFocused ? 'person' : 'person-outline';
+            default:
+              return 'list';
           }
         };
 
-        const onLongPress = () => {
-          navigation.emit({
-            type: 'tabLongPress',
-            target: route.key,
-          });
+        const getLabel = (routeName: string) => {
+          switch (routeName) {
+            case 'Tasks':
+              return t('tabBar.tasks');
+            case 'Statistics':
+              return t('tabBar.statistics');
+            case 'Profile':
+              return t('tabBar.profile');
+            default:
+              return '';
+          }
         };
-
-        // Определяем иконку в зависимости от имени маршрута
-        let iconName = 'help-outline';
-        if (route.name === 'Tasks') {
-          iconName = isFocused ? 'list' : 'list-outline';
-        } else if (route.name === 'Statistics') {
-          iconName = isFocused ? 'bar-chart' : 'bar-chart-outline';
-        } else if (route.name === 'Profile') {
-          iconName = isFocused ? 'person' : 'person-outline';
-        }
 
         return (
           <TouchableOpacity
             key={route.key}
-            accessibilityRole="button"
-            accessibilityState={isFocused ? { selected: true } : {}}
-            accessibilityLabel={options.tabBarAccessibilityLabel}
-            testID={options.tabBarTestID}
-            onPress={onPress}
-            onLongPress={onLongPress}
-            style={styles.tabButton}
+            style={styles.tab}
+            onPress={() => navigation.navigate(route.name)}
           >
-            <View style={styles.tabContent}>
-              <View 
-                style={[
-                  styles.iconContainer, 
-                  isFocused && { backgroundColor: colors.transparencyPrimary }
-                ]}
-              >
-                <Ionicons 
-                  name={iconName as any} 
-                  size={24} 
-                  color={isFocused ? colors.primary : colors.text03} 
-                />
-              </View>
-              <View 
-                style={[
-                  styles.labelContainer,
-                  isFocused && { backgroundColor: colors.primary }
-                ]} 
-              />
-            </View>
+            <Ionicons
+              name={getIconName(route.name)}
+              size={24}
+              color={isFocused ? colors.primary : colors.text}
+            />
+            <Text style={[styles.label, { color: isFocused ? colors.primary : colors.text }]}>
+              {getLabel(route.name)}
+            </Text>
           </TouchableOpacity>
         );
       })}
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    borderTopWidth: 1,
-    elevation: 0,
-    shadowOpacity: 0,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: 'rgba(0, 0, 0, 0.1)',
   },
-  tabButton: {
+  tab: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 8,
   },
-  tabContent: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  iconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 4,
-  },
-  labelContainer: {
-    width: 4,
-    height: 4,
-    borderRadius: 2,
+  label: {
+    fontSize: 12,
+    marginTop: 4,
   },
 }); 

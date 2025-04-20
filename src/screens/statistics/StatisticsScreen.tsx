@@ -15,11 +15,13 @@ import { useTheme } from "../../shared/hooks/use-theme";
 import Typography from "../../shared/components/typography";
 import { PieChart } from "../../shared/components/charts/PieChart";
 import { ActivityChart } from "@/src/shared/components/charts/ActivityChart";
+import useTranslate from "../../shared/localization/use-translate";
 
 export const StatisticsScreen = observer(() => {
   const { taskStore } = useStore();
   const { colors } = useTheme();
   const { width } = useWindowDimensions();
+  const { translate } = useTranslate();
 
   useEffect(() => {
     taskStore.fetchTasks();
@@ -49,10 +51,7 @@ export const StatisticsScreen = observer(() => {
     return color;
   };
 
-  // Используем реальные данные из стора вместо моковых
   const chartData = getTasksByCategory();
-
-  // Проверяем, есть ли данные для отображения
   const hasData = chartData.length > 0;
 
   return (
@@ -61,14 +60,14 @@ export const StatisticsScreen = observer(() => {
     >
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={[styles.header, { backgroundColor: colors.card }]}>
-          <Typography style={styles.title}>Статистика</Typography>
+          <Typography style={styles.title}>{translate('statistics.title')}</Typography>
           <View style={styles.statsContainer}>
             <View style={styles.statItem}>
               <Typography style={styles.statValue}>
                 {taskStore.tasks.length}
               </Typography>
               <Typography style={{ ...styles.statLabel, color: colors.text02 }}>
-                Всего задач
+                {translate('statistics.stats.total')}
               </Typography>
             </View>
             <View style={styles.statItem}>
@@ -76,7 +75,7 @@ export const StatisticsScreen = observer(() => {
                 {taskStore.completedTasks.length}
               </Typography>
               <Typography style={{ ...styles.statLabel, color: colors.text02 }}>
-                Выполнено
+                {translate('statistics.stats.completed')}
               </Typography>
             </View>
             <View style={styles.statItem}>
@@ -84,7 +83,7 @@ export const StatisticsScreen = observer(() => {
                 {taskStore.activeTasks.length}
               </Typography>
               <Typography style={{ ...styles.statLabel, color: colors.text02 }}>
-                В процессе
+                {translate('statistics.stats.inProgress')}
               </Typography>
             </View>
           </View>
@@ -92,7 +91,7 @@ export const StatisticsScreen = observer(() => {
 
         <View style={[styles.chartContainer, { backgroundColor: colors.card }]}>
           <Typography style={styles.chartTitle}>
-            Распределение по категориям
+            {translate('statistics.categories')}
           </Typography>
 
           {hasData ? (
@@ -102,13 +101,13 @@ export const StatisticsScreen = observer(() => {
           ) : (
             <View style={styles.emptyState}>
               <Typography style={styles.emptyStateText}>
-                Нет данных для отображения
+                {translate('statistics.noData')}
               </Typography>
             </View>
           )}
         </View>
         <View style={[styles.chartContainer, { backgroundColor: colors.card }]}>
-          <Typography style={styles.chartTitle}>Активность</Typography>
+          <Typography style={styles.chartTitle}>{translate('statistics.activity')}</Typography>
 
           {hasData ? (
             <>
@@ -117,7 +116,7 @@ export const StatisticsScreen = observer(() => {
           ) : (
             <View style={styles.emptyState}>
               <Typography style={styles.emptyStateText}>
-                Нет данных для отображения
+                {translate('statistics.noData')}
               </Typography>
             </View>
           )}
@@ -126,12 +125,12 @@ export const StatisticsScreen = observer(() => {
         <View
           style={[styles.trendsContainer, { backgroundColor: colors.card }]}
         >
-          <Typography style={styles.trendsTitle}>Тренды</Typography>
+          <Typography style={styles.trendsTitle}>{translate('statistics.trends')}</Typography>
           <View style={styles.trendItem}>
             <Ionicons name="trending-up" size={24} color={colors.success} />
             <View style={styles.trendInfo}>
               <Typography style={styles.trendLabel}>
-                Процент выполнения
+                {translate('statistics.completionRate')}
               </Typography>
               <Typography
                 style={{ ...styles.trendValue, color: colors.success }}
@@ -143,7 +142,7 @@ export const StatisticsScreen = observer(() => {
           <View style={styles.trendItem}>
             <Ionicons name="time" size={24} color={colors.warning} />
             <View style={styles.trendInfo}>
-              <Typography style={styles.trendLabel}>Активные задачи</Typography>
+              <Typography style={styles.trendLabel}>{translate('statistics.activeTasks')}</Typography>
               <Typography
                 style={{ ...styles.trendValue, color: colors.warning }}
               >
@@ -163,6 +162,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: 16,
+    paddingBottom: 100,
   },
   header: {
     padding: 24,
