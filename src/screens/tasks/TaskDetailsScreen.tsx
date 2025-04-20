@@ -51,7 +51,7 @@ export const TaskDetailsScreen = observer(() => {
             <View style={styles.metaItem}>
               <Ionicons name="calendar-outline" size={20} color={colors.text02} />
               <Typography style={{ ...styles.metaText, color: colors.text02 }}>
-                {new Date(task.dueDate).toLocaleDateString()}
+                {task.endDate ? new Date(task.endDate).toLocaleDateString() : 'Бессрочно'}
               </Typography>
             </View>
             <View style={styles.metaItem}>

@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
   ScrollView,
-  TextStyle,
   SafeAreaView,
+  ActivityIndicator,
 } from "react-native";
 import { observer } from "mobx-react-lite";
 import { useWindowDimensions } from "react-native";
@@ -16,12 +16,15 @@ import Typography from "../../shared/components/typography";
 import { PieChart } from "../../shared/components/charts/PieChart";
 import { ActivityChart } from "@/src/shared/components/charts/ActivityChart";
 import useTranslate from "../../shared/localization/use-translate";
-
+import { queryMistralAI } from "@/src/shared/api/ai";
+import Button from "@/src/shared/components/button";
 export const StatisticsScreen = observer(() => {
   const { taskStore } = useStore();
   const { colors } = useTheme();
   const { width } = useWindowDimensions();
   const { translate } = useTranslate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [statistics, setStatistics] = useState<any>(null);
 
   useEffect(() => {
     taskStore.fetchTasks();
@@ -51,6 +54,16 @@ export const StatisticsScreen = observer(() => {
     return color;
   };
 
+  const getStatistics = () => {
+    setIsLoading(true);
+    queryMistralAI(JSON.stringify(taskStore.tasks)).then((data) => {
+      console.log(data);
+      setStatistics(data);
+    }).finally(() => {
+      setIsLoading(false);
+    });
+  };
+
   const chartData = getTasksByCategory();
   const hasData = chartData.length > 0;
 
@@ -60,14 +73,16 @@ export const StatisticsScreen = observer(() => {
     >
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={[styles.header, { backgroundColor: colors.card }]}>
-          <Typography style={styles.title}>{translate('statistics.title')}</Typography>
+          <Typography style={styles.title}>
+            {translate("statistics.title")}
+          </Typography>
           <View style={styles.statsContainer}>
             <View style={styles.statItem}>
               <Typography style={styles.statValue}>
                 {taskStore.tasks.length}
               </Typography>
               <Typography style={{ ...styles.statLabel, color: colors.text02 }}>
-                {translate('statistics.stats.total')}
+                {translate("statistics.stats.total")}
               </Typography>
             </View>
             <View style={styles.statItem}>
@@ -75,7 +90,7 @@ export const StatisticsScreen = observer(() => {
                 {taskStore.completedTasks.length}
               </Typography>
               <Typography style={{ ...styles.statLabel, color: colors.text02 }}>
-                {translate('statistics.stats.completed')}
+                {translate("statistics.stats.completed")}
               </Typography>
             </View>
             <View style={styles.statItem}>
@@ -83,7 +98,7 @@ export const StatisticsScreen = observer(() => {
                 {taskStore.activeTasks.length}
               </Typography>
               <Typography style={{ ...styles.statLabel, color: colors.text02 }}>
-                {translate('statistics.stats.inProgress')}
+                {translate("statistics.stats.inProgress")}
               </Typography>
             </View>
           </View>
@@ -91,7 +106,7 @@ export const StatisticsScreen = observer(() => {
 
         <View style={[styles.chartContainer, { backgroundColor: colors.card }]}>
           <Typography style={styles.chartTitle}>
-            {translate('statistics.categories')}
+            {translate("statistics.categories")}
           </Typography>
 
           {hasData ? (
@@ -101,13 +116,15 @@ export const StatisticsScreen = observer(() => {
           ) : (
             <View style={styles.emptyState}>
               <Typography style={styles.emptyStateText}>
-                {translate('statistics.noData')}
+                {translate("statistics.noData")}
               </Typography>
             </View>
           )}
         </View>
         <View style={[styles.chartContainer, { backgroundColor: colors.card }]}>
-          <Typography style={styles.chartTitle}>{translate('statistics.activity')}</Typography>
+          <Typography style={styles.chartTitle}>
+            {translate("statistics.activity")}
+          </Typography>
 
           {hasData ? (
             <>
@@ -116,21 +133,41 @@ export const StatisticsScreen = observer(() => {
           ) : (
             <View style={styles.emptyState}>
               <Typography style={styles.emptyStateText}>
-                {translate('statistics.noData')}
+                {translate("statistics.noData")}
               </Typography>
             </View>
+          )}
+        </View>
+
+        <View style={[styles.chartContainer, { backgroundColor: colors.card }]}>
+          <Typography style={styles.chartTitle}>Statistics from AI</Typography>
+
+          {isLoading ? (
+            <ActivityIndicator size="large" />
+          ) : statistics ? (
+            <>
+              <Typography style={styles.chartTitle}>{statistics}</Typography>
+            </>
+          ) : (
+            <>
+              <Typography style={styles.chartTitle}>
+                {translate("statistics.noData")}
+              </Typography>
+            </>
           )}
         </View>
 
         <View
           style={[styles.trendsContainer, { backgroundColor: colors.card }]}
         >
-          <Typography style={styles.trendsTitle}>{translate('statistics.trends')}</Typography>
+          <Typography style={styles.trendsTitle}>
+            {translate("statistics.trends")}
+          </Typography>
           <View style={styles.trendItem}>
             <Ionicons name="trending-up" size={24} color={colors.success} />
             <View style={styles.trendInfo}>
               <Typography style={styles.trendLabel}>
-                {translate('statistics.completionRate')}
+                {translate("statistics.completionRate")}
               </Typography>
               <Typography
                 style={{ ...styles.trendValue, color: colors.success }}
@@ -142,13 +179,18 @@ export const StatisticsScreen = observer(() => {
           <View style={styles.trendItem}>
             <Ionicons name="time" size={24} color={colors.warning} />
             <View style={styles.trendInfo}>
-              <Typography style={styles.trendLabel}>{translate('statistics.activeTasks')}</Typography>
+              <Typography style={styles.trendLabel}>
+                {translate("statistics.activeTasks")}
+              </Typography>
               <Typography
                 style={{ ...styles.trendValue, color: colors.warning }}
               >
                 {taskStore.activeTasks.length}
               </Typography>
             </View>
+          </View>
+          <View style={styles.trendItem}>
+            <Button disabled={isLoading} onPress={getStatistics}>get statistics from ai</Button>
           </View>
         </View>
       </ScrollView>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, FlatList, TouchableOpacity, TextStyle, SafeAreaView, ViewStyle } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { observer } from 'mobx-react-lite';
 import { Ionicons } from '@expo/vector-icons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -11,9 +11,10 @@ import Typography from '../../shared/components/typography';
 import useTheme from '../../shared/hooks/use-theme/use-theme';
 import { Task } from '../../entity/task/types';
 import { FilterTabs, TabItem } from '../../shared/components/filter-tabs';
-import { TasksStackParamList } from '../../router/tasks-navigator';
+import { TasksStackParamList } from '@/src/router/types';
+import { TaskStore } from '@/src/entity/task/task-store';
 
-type NavigationProp = NativeStackNavigationProp<TasksStackParamList, 'TasksHome'>;
+type NavigationProp = NativeStackNavigationProp<TasksStackParamList, 'TasksList'>;
 
 type FilterType = 'all' | 'active' | 'completed';
 
@@ -41,6 +42,7 @@ export const TasksScreen = observer(() => {
   const [filter, setFilter] = useState<FilterType>('all');
   const { t } = useTranslation();
 
+  const isFocused = useIsFocused();
   const filterTabs: TabItem[] = [
     { key: 'all', title: t('tasks.filters.all'), icon: 'apps-outline' },
     { key: 'active', title: t('tasks.filters.active'), icon: 'time-outline' },
@@ -49,7 +51,7 @@ export const TasksScreen = observer(() => {
 
   useEffect(() => {
     taskStore.fetchTasks();
-  }, []);
+  }, [isFocused]);
 
   const handleAddTask = () => {
     navigation.navigate('TaskForm');
@@ -57,6 +59,7 @@ export const TasksScreen = observer(() => {
 
   const handleToggleStatus = async (id: string, completed: boolean) => {
     await taskStore.updateTaskStatus(id, { completed: !completed });
+    taskStore.fetchTasks();
   };
 
   const handleDeleteTask = async (id: string) => {
@@ -111,9 +114,14 @@ export const TasksScreen = observer(() => {
             <Typography style={descriptionStyle} numberOfLines={2}>
               {item.description}
             </Typography>
+            <View style={{ flexDirection: 'row', gap: 4 }}>
+            <Typography style={dateStyle}>
+              {item.category ? item.category : t('tasks.noCategory')}
+            </Typography>
             <Typography style={dateStyle}>
               {item.endDate ? new Date(item.endDate).toLocaleDateString() : t('tasks.noEndDate')}
             </Typography>
+            </View>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
@@ -149,6 +157,7 @@ export const TasksScreen = observer(() => {
 
         <FlatList
           style={styles.list}
+          contentContainerStyle={{ gap: 12 }}
           data={getFilteredTasks()}
           renderItem={renderTaskItem}
           keyExtractor={(item) => item.id}

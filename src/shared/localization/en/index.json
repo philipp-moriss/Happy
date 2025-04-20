@@ -18,6 +18,7 @@
     },
     "noEndDate": "No due date",
     "addTask": "Add Task",
+    "noCategory": "No category",
     "form": {
       "title": "Edit Goal",
       "name": "Name",
