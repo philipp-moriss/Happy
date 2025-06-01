@@ -43,6 +43,7 @@ export function PieChart({ data }: PieChartProps) {
         data={chartData}
         width={chartWidth}
         height={220}
+        hasLegend={false}
         chartConfig={chartConfig}
         accessor="value"
         backgroundColor="transparent"

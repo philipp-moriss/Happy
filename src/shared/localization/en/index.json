@@ -20,11 +20,11 @@
     "addTask": "Add Task",
     "noCategory": "No category",
     "form": {
-      "title": "Edit Goal",
-      "name": "Name",
+      "title": "Create Task",
+      "name": "Title",
       "namePlaceholder": "Charity",
       "description": "Description",
-      "descriptionPlaceholder": "To the cat and dog shelter \"Dobrodel\"",
+      "descriptionPlaceholder": "To the cat and dog shelter \"Dobrodel\"", 
       "category": "Category",
       "submit": "Add",
       "cancel": "Cancel"

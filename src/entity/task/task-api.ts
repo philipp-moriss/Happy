@@ -5,61 +5,12 @@ const TASKS_STORAGE_KEY = '@tasks';
 
 // Тестовые данные для отладки
 const MOCK_TASKS: Task[] = [
-  {
-    id: '1',
-    title: 'Задача 1',
-    description: 'Описание задачи 1',
-    dueDate: new Date(),
-    category: 'Работа',
-    completed: true,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: '2',
-    title: 'Задача 2',
-    description: 'Описание задачи 2',
-    dueDate: new Date(),
-    category: 'Здоровье',
-    completed: false,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: '3',
-    title: 'Задача 3',
-    description: 'Описание задачи 3',
-    dueDate: new Date(),
-    category: 'Отношения',
-    completed: true,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: '4',
-    title: 'Задача 4',
-    description: 'Описание задачи 4',
-    dueDate: new Date(),
-    category: 'Развитие',
-    completed: false,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: '5',
-    title: 'Задача 5',
-    description: 'Описание задачи 5',
-    dueDate: new Date(),
-    category: 'Досуг',
-    completed: true,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
 ];
 
 export class TaskApi {
   async fetchTasks(): Promise<Task[]> {
     try {
+      // await AsyncStorage.setItem(TASKS_STORAGE_KEY, JSON.stringify([]));
       const tasksJson = await AsyncStorage.getItem(TASKS_STORAGE_KEY);
       
       // Если данных нет, используем тестовые данные
@@ -71,7 +22,7 @@ export class TaskApi {
       const tasks = JSON.parse(tasksJson);
       return tasks.map((task: Task) => ({
         ...task,
-        dueDate: new Date(task.dueDate),
+        endDate: task.endDate ? new Date(task.endDate) : null,
         createdAt: new Date(task.createdAt),
         updatedAt: new Date(task.updatedAt),
       }));
@@ -89,6 +40,7 @@ export class TaskApi {
         id: Date.now().toString(),
         ...data,
         completed: false,
+        endDate: data.endDate ? new Date(data.endDate) : null,
         createdAt: new Date(),
         updatedAt: new Date(),
       };

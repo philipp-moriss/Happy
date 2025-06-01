@@ -18,6 +18,77 @@ import { ActivityChart } from "@/src/shared/components/charts/ActivityChart";
 import useTranslate from "../../shared/localization/use-translate";
 import { queryMistralAI } from "@/src/shared/api/ai";
 import Button from "@/src/shared/components/button";
+import { ProgressChart } from "@/src/shared/components/charts/ProgressChart";
+
+// Компонент карточки категории
+function CategoryStatCard({
+  color,
+  icon,
+  title,
+  subtitle,
+  percent,
+  progress,
+  advice,
+}: {
+  color: string;
+  icon: keyof typeof Ionicons.glyphMap;
+  title: string;
+  subtitle: string;
+  percent: number;
+  progress: number;
+  advice: string;
+}) {
+  return (
+    <View style={[styles.categoryCard, { backgroundColor: color + '22' }]}> {/* Цвет с прозрачностью */}
+      <View style={styles.categoryHeader}>
+        <Ionicons name={icon} size={24} color={color} style={{ marginRight: 8 }} />
+        <View>
+          <Typography style={styles.categoryTitle}>{title}</Typography>
+          <Typography style={styles.categorySubtitle}>{subtitle}</Typography>
+        </View>
+        <View style={{ flex: 1 }} />
+        <Typography style={Object.assign({}, styles.categoryPercent, { color })}>{percent}%</Typography>
+      </View>
+      {/* Мини-прогресс-бар */}
+      <View style={styles.progressBarBg}>
+        <View style={[styles.progressBarFill, { width: `${progress * 100}%`, backgroundColor: color }]} />
+      </View>
+      <Typography style={styles.categoryAdvice}>{advice}</Typography>
+    </View>
+  );
+}
+
+// Метаданные по категориям: цвет, иконка, совет
+const CATEGORY_META: Record<string, {
+  color: string;
+  icon: keyof typeof Ionicons.glyphMap;
+  title: string;
+  subtitle: string;
+  advice: string;
+}> = {
+  eudaimonic: {
+    color: '#6C7AF2',
+    icon: 'happy-outline',
+    title: 'Eudaimonic',
+    subtitle: 'Personal growth tasks',
+    advice: 'Need more focus on personal development',
+  },
+  hedonic: {
+    color: '#F26CA7',
+    icon: 'heart-outline',
+    title: 'Hedonic',
+    subtitle: 'Pleasure & enjoyment',
+    advice: 'Highest category - good work-life balance',
+  },
+  psychological: {
+    color: '#6CF2B2',
+    icon: 'leaf-outline',
+    title: 'Mental Wealth',
+    subtitle: 'Mindfulness & wellbeing',
+    advice: 'Consider adding more mindfulness activities',
+  },
+};
+
 export const StatisticsScreen = observer(() => {
   const { taskStore } = useStore();
   const { colors } = useTheme();
@@ -30,12 +101,18 @@ export const StatisticsScreen = observer(() => {
     taskStore.fetchTasks();
   }, []);
 
+  const colorsObject = {
+    eudaimonic: '#6C7AF2',
+    hedonic: '#F26CA7',
+    psychological: '#6CF2B2',
+  };
+
   const getTasksByCategory = () => {
     const tasksByCategory = taskStore.tasksByCategory;
     return Object.entries(tasksByCategory).map(([name, tasks]) => ({
       name,
       value: tasks.length,
-      color: getRandomColor(),
+      color: colorsObject[name as keyof typeof colorsObject] ?? '#CCCCCC',
     }));
   };
 
@@ -67,48 +144,50 @@ export const StatisticsScreen = observer(() => {
   const chartData = getTasksByCategory();
   const hasData = chartData.length > 0;
 
+  // Динамически формируем статистику по категориям
+  const totalTasks = taskStore.tasks.length;
+  const tasksByCategory = taskStore.tasksByCategory;
+  const categoryStats = Object.entries(tasksByCategory).map(([key, tasks]) => {
+    const meta = CATEGORY_META[key] || {
+      color: '#CCCCCC',
+      icon: 'help-circle-outline',
+      title: key,
+      subtitle: '',
+      advice: '',
+    };
+    const percent = totalTasks > 0 ? Math.round((tasks.length / totalTasks) * 100) : 0;
+    const progress = totalTasks > 0 ? tasks.length / totalTasks : 0;
+    return {
+      key,
+      ...meta,
+      percent,
+      progress,
+    };
+  });
+
+  // Функция для рандомного совета
+  function getRandomAdvice() {
+    const advices = categoryStats.map(c => c.advice).filter(Boolean);
+    return advices.length > 0 ? advices[Math.floor(Math.random() * advices.length)] : '';
+  }
+  const [randomAdvice, setRandomAdvice] = useState('');
+
   return (
-    <SafeAreaView
-      style={[styles.container, { backgroundColor: colors.background }]}
-    >
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <View style={[styles.header, { backgroundColor: colors.card }]}>
-          <Typography style={styles.title}>
-            {translate("statistics.title")}
-          </Typography>
-          <View style={styles.statsContainer}>
-            <View style={styles.statItem}>
-              <Typography style={styles.statValue}>
-                {taskStore.tasks.length}
-              </Typography>
-              <Typography style={{ ...styles.statLabel, color: colors.text02 }}>
-                {translate("statistics.stats.total")}
-              </Typography>
-            </View>
-            <View style={styles.statItem}>
-              <Typography style={styles.statValue}>
-                {taskStore.completedTasks.length}
-              </Typography>
-              <Typography style={{ ...styles.statLabel, color: colors.text02 }}>
-                {translate("statistics.stats.completed")}
-              </Typography>
-            </View>
-            <View style={styles.statItem}>
-              <Typography style={styles.statValue}>
-                {taskStore.activeTasks.length}
-              </Typography>
-              <Typography style={{ ...styles.statLabel, color: colors.text02 }}>
-                {translate("statistics.stats.inProgress")}
-              </Typography>
-            </View>
-          </View>
+        <View style={{ marginBottom: 16 }}>
+          <Typography style={styles.title}>Statistics</Typography>
+          <Typography style={styles.subtitle}>Task category distribution</Typography>
         </View>
-
-        <View style={[styles.chartContainer, { backgroundColor: colors.card }]}>
-          <Typography style={styles.chartTitle}>
-            {translate("statistics.categories")}
-          </Typography>
-
+        {categoryStats.map((cat) => (
+          <CategoryStatCard key={cat.key} {...cat} />
+        ))}
+        <Button style={{ marginVertical: 8 }} onPress={() => setRandomAdvice(getRandomAdvice())}>Рандом совет</Button>
+        {randomAdvice ? (
+          <Typography style={styles.randomAdvice}>{randomAdvice}</Typography>
+        ) : null}
+        <View style={[styles.chartContainer, { backgroundColor: colors.card }]}> 
+          <Typography style={styles.chartTitle}>Category Distribution</Typography>
           {hasData ? (
             <>
               <PieChart data={chartData} />
@@ -132,66 +211,9 @@ export const StatisticsScreen = observer(() => {
             </>
           ) : (
             <View style={styles.emptyState}>
-              <Typography style={styles.emptyStateText}>
-                {translate("statistics.noData")}
-              </Typography>
+              <Typography style={styles.emptyStateText}>{translate('statistics.noData')}</Typography>
             </View>
           )}
-        </View>
-
-        <View style={[styles.chartContainer, { backgroundColor: colors.card }]}>
-          <Typography style={styles.chartTitle}>Statistics from AI</Typography>
-
-          {isLoading ? (
-            <ActivityIndicator size="large" />
-          ) : statistics ? (
-            <>
-              <Typography style={styles.chartTitle}>{statistics}</Typography>
-            </>
-          ) : (
-            <>
-              <Typography style={styles.chartTitle}>
-                {translate("statistics.noData")}
-              </Typography>
-            </>
-          )}
-        </View>
-
-        <View
-          style={[styles.trendsContainer, { backgroundColor: colors.card }]}
-        >
-          <Typography style={styles.trendsTitle}>
-            {translate("statistics.trends")}
-          </Typography>
-          <View style={styles.trendItem}>
-            <Ionicons name="trending-up" size={24} color={colors.success} />
-            <View style={styles.trendInfo}>
-              <Typography style={styles.trendLabel}>
-                {translate("statistics.completionRate")}
-              </Typography>
-              <Typography
-                style={{ ...styles.trendValue, color: colors.success }}
-              >
-                {getCompletionRate().toFixed(1)}%
-              </Typography>
-            </View>
-          </View>
-          <View style={styles.trendItem}>
-            <Ionicons name="time" size={24} color={colors.warning} />
-            <View style={styles.trendInfo}>
-              <Typography style={styles.trendLabel}>
-                {translate("statistics.activeTasks")}
-              </Typography>
-              <Typography
-                style={{ ...styles.trendValue, color: colors.warning }}
-              >
-                {taskStore.activeTasks.length}
-              </Typography>
-            </View>
-          </View>
-          <View style={styles.trendItem}>
-            <Button disabled={isLoading} onPress={getStatistics}>get statistics from ai</Button>
-          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -289,5 +311,61 @@ const styles = StyleSheet.create({
   trendValue: {
     fontSize: 14,
     fontWeight: "600",
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#7B7B7B',
+    marginBottom: 16,
+  },
+  categoryCard: {
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 16,
+    backgroundColor: '#F5F6FA',
+    shadowColor: '#000',
+    shadowOpacity: 0.04,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 2 },
+  },
+  categoryHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  categoryTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#222',
+  },
+  categorySubtitle: {
+    fontSize: 14,
+    color: '#7B7B7B',
+  },
+  categoryPercent: {
+    fontSize: 24,
+    fontWeight: '700',
+    marginLeft: 8,
+  },
+  progressBarBg: {
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#E5E5E5',
+    marginVertical: 8,
+    overflow: 'hidden',
+  },
+  progressBarFill: {
+    height: 8,
+    borderRadius: 4,
+  },
+  categoryAdvice: {
+    fontSize: 13,
+    color: '#B36C6C',
+    marginTop: 8,
+  },
+  randomAdvice: {
+    fontSize: 15,
+    color: '#6C7AF2',
+    marginBottom: 8,
+    textAlign: 'center',
   },
 });
