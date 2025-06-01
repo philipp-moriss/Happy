@@ -19,7 +19,7 @@ export const COLORS: ThemeColors = {
   bgTransparency50: "rgba(255, 255, 255, 0.5)",
   transparencyPrimary: "rgba(135, 74, 176, 0.1)",
   transparency80: "rgba(255, 255, 255, 0.8)",
-  primary: "#874AB0",
+  primary: "#6C7AF2",
   green: "#34C759",
   yellow: "#FFB800",
   pink: "#FF7483",

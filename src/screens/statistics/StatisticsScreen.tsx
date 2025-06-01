@@ -39,19 +39,32 @@ function CategoryStatCard({
   advice: string;
 }) {
   return (
-    <View style={[styles.categoryCard, { backgroundColor: color + '22' }]}> {/* Цвет с прозрачностью */}
+    <View style={[styles.categoryCard, { backgroundColor: color + "22" }]}>
       <View style={styles.categoryHeader}>
-        <Ionicons name={icon} size={24} color={color} style={{ marginRight: 8 }} />
+        <Ionicons
+          name={icon}
+          size={24}
+          color={color}
+          style={{ marginRight: 8 }}
+        />
         <View>
           <Typography style={styles.categoryTitle}>{title}</Typography>
           <Typography style={styles.categorySubtitle}>{subtitle}</Typography>
         </View>
         <View style={{ flex: 1 }} />
-        <Typography style={Object.assign({}, styles.categoryPercent, { color })}>{percent}%</Typography>
+        <Typography
+          style={Object.assign({}, styles.categoryPercent, { color })}
+        >
+          {percent}%
+        </Typography>
       </View>
-      {/* Мини-прогресс-бар */}
       <View style={styles.progressBarBg}>
-        <View style={[styles.progressBarFill, { width: `${progress * 100}%`, backgroundColor: color }]} />
+        <View
+          style={[
+            styles.progressBarFill,
+            { width: `${progress * 100}%`, backgroundColor: color },
+          ]}
+        />
       </View>
       <Typography style={styles.categoryAdvice}>{advice}</Typography>
     </View>
@@ -59,33 +72,36 @@ function CategoryStatCard({
 }
 
 // Метаданные по категориям: цвет, иконка, совет
-const CATEGORY_META: Record<string, {
-  color: string;
-  icon: keyof typeof Ionicons.glyphMap;
-  title: string;
-  subtitle: string;
-  advice: string;
-}> = {
+const CATEGORY_META: Record<
+  string,
+  {
+    color: string;
+    icon: keyof typeof Ionicons.glyphMap;
+    title: string;
+    subtitle: string;
+    advice: string;
+  }
+> = {
   eudaimonic: {
-    color: '#6C7AF2',
-    icon: 'happy-outline',
-    title: 'Eudaimonic',
-    subtitle: 'Personal growth tasks',
-    advice: 'Need more focus on personal development',
+    color: "#6C7AF2",
+    icon: "happy-outline",
+    title: "Eudaimonic",
+    subtitle: "Personal growth tasks",
+    advice: "Need more focus on personal development",
   },
   hedonic: {
-    color: '#F26CA7',
-    icon: 'heart-outline',
-    title: 'Hedonic',
-    subtitle: 'Pleasure & enjoyment',
-    advice: 'Highest category - good work-life balance',
+    color: "#F26CA7",
+    icon: "heart-outline",
+    title: "Hedonic",
+    subtitle: "Pleasure & enjoyment",
+    advice: "Highest category - good work-life balance",
   },
   psychological: {
-    color: '#6CF2B2',
-    icon: 'leaf-outline',
-    title: 'Mental Wealth',
-    subtitle: 'Mindfulness & wellbeing',
-    advice: 'Consider adding more mindfulness activities',
+    color: "#6CF2B2",
+    icon: "leaf-outline",
+    title: "Mental Wealth",
+    subtitle: "Mindfulness & wellbeing",
+    advice: "Consider adding more mindfulness activities",
   },
 };
 
@@ -102,9 +118,9 @@ export const StatisticsScreen = observer(() => {
   }, []);
 
   const colorsObject = {
-    eudaimonic: '#6C7AF2',
-    hedonic: '#F26CA7',
-    psychological: '#6CF2B2',
+    eudaimonic: "#6C7AF2",
+    hedonic: "#F26CA7",
+    psychological: "#6CF2B2",
   };
 
   const getTasksByCategory = () => {
@@ -112,7 +128,7 @@ export const StatisticsScreen = observer(() => {
     return Object.entries(tasksByCategory).map(([name, tasks]) => ({
       name,
       value: tasks.length,
-      color: colorsObject[name as keyof typeof colorsObject] ?? '#CCCCCC',
+      color: colorsObject[name as keyof typeof colorsObject] ?? "#CCCCCC",
     }));
   };
 
@@ -133,12 +149,14 @@ export const StatisticsScreen = observer(() => {
 
   const getStatistics = () => {
     setIsLoading(true);
-    queryMistralAI(JSON.stringify(taskStore.tasks)).then((data) => {
-      console.log(data);
-      setStatistics(data);
-    }).finally(() => {
-      setIsLoading(false);
-    });
+    queryMistralAI(JSON.stringify(taskStore.tasks))
+      .then((data) => {
+        console.log(data);
+        setStatistics(data);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const chartData = getTasksByCategory();
@@ -149,13 +167,14 @@ export const StatisticsScreen = observer(() => {
   const tasksByCategory = taskStore.tasksByCategory;
   const categoryStats = Object.entries(tasksByCategory).map(([key, tasks]) => {
     const meta = CATEGORY_META[key] || {
-      color: '#CCCCCC',
-      icon: 'help-circle-outline',
+      color: "#CCCCCC",
+      icon: "help-circle-outline",
       title: key,
-      subtitle: '',
-      advice: '',
+      subtitle: "",
+      advice: "",
     };
-    const percent = totalTasks > 0 ? Math.round((tasks.length / totalTasks) * 100) : 0;
+    const percent =
+      totalTasks > 0 ? Math.round((tasks.length / totalTasks) * 100) : 0;
     const progress = totalTasks > 0 ? tasks.length / totalTasks : 0;
     return {
       key,
@@ -167,27 +186,40 @@ export const StatisticsScreen = observer(() => {
 
   // Функция для рандомного совета
   function getRandomAdvice() {
-    const advices = categoryStats.map(c => c.advice).filter(Boolean);
-    return advices.length > 0 ? advices[Math.floor(Math.random() * advices.length)] : '';
+    const advices = categoryStats.map((c) => c.advice).filter(Boolean);
+    return advices.length > 0
+      ? advices[Math.floor(Math.random() * advices.length)]
+      : "";
   }
-  const [randomAdvice, setRandomAdvice] = useState('');
+  const [randomAdvice, setRandomAdvice] = useState("");
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: colors.background }]}
+    >
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={{ marginBottom: 16 }}>
           <Typography style={styles.title}>Statistics</Typography>
-          <Typography style={styles.subtitle}>Task category distribution</Typography>
+          <Typography style={styles.subtitle}>
+            Task category distribution
+          </Typography>
         </View>
-        {categoryStats.map((cat) => (
-          <CategoryStatCard key={cat.key} {...cat} />
+        {categoryStats.map((cat, index) => (
+          <CategoryStatCard {...cat} key={index + cat.key + "123"} />
         ))}
-        <Button style={{ marginVertical: 8 }} onPress={() => setRandomAdvice(getRandomAdvice())}>Рандом совет</Button>
+        <Button
+          style={{ marginVertical: 8 }}
+          onPress={() => setRandomAdvice(getRandomAdvice())}
+        >
+          <Typography>Рандом совет</Typography>
+        </Button>
         {randomAdvice ? (
           <Typography style={styles.randomAdvice}>{randomAdvice}</Typography>
         ) : null}
-        <View style={[styles.chartContainer, { backgroundColor: colors.card }]}> 
-          <Typography style={styles.chartTitle}>Category Distribution</Typography>
+        <View style={[styles.chartContainer, { backgroundColor: colors.card }]}>
+          <Typography style={styles.chartTitle}>
+            Category Distribution
+          </Typography>
           {hasData ? (
             <>
               <PieChart data={chartData} />
@@ -211,7 +243,9 @@ export const StatisticsScreen = observer(() => {
             </>
           ) : (
             <View style={styles.emptyState}>
-              <Typography style={styles.emptyStateText}>{translate('statistics.noData')}</Typography>
+              <Typography style={styles.emptyStateText}>
+                {translate("statistics.noData")}
+              </Typography>
             </View>
           )}
         </View>
@@ -314,44 +348,44 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 16,
-    color: '#7B7B7B',
+    color: "#7B7B7B",
     marginBottom: 16,
   },
   categoryCard: {
     borderRadius: 16,
     padding: 20,
     marginBottom: 16,
-    backgroundColor: '#F5F6FA',
-    shadowColor: '#000',
+    backgroundColor: "#F5F6FA",
+    shadowColor: "#000",
     shadowOpacity: 0.04,
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 2 },
   },
   categoryHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 12,
   },
   categoryTitle: {
     fontSize: 18,
-    fontWeight: '700',
-    color: '#222',
+    fontWeight: "700",
+    color: "#222",
   },
   categorySubtitle: {
     fontSize: 14,
-    color: '#7B7B7B',
+    color: "#7B7B7B",
   },
   categoryPercent: {
     fontSize: 24,
-    fontWeight: '700',
+    fontWeight: "700",
     marginLeft: 8,
   },
   progressBarBg: {
     height: 8,
     borderRadius: 4,
-    backgroundColor: '#E5E5E5',
+    backgroundColor: "#E5E5E5",
     marginVertical: 8,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   progressBarFill: {
     height: 8,
@@ -359,13 +393,13 @@ const styles = StyleSheet.create({
   },
   categoryAdvice: {
     fontSize: 13,
-    color: '#B36C6C',
+    color: "#B36C6C",
     marginTop: 8,
   },
   randomAdvice: {
     fontSize: 15,
-    color: '#6C7AF2',
+    color: "#6C7AF2",
     marginBottom: 8,
-    textAlign: 'center',
+    textAlign: "center",
   },
 });

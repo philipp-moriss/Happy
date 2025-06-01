@@ -5,9 +5,11 @@ import { OnboardingScreen } from '../screens/onboarding/OnboardingScreen';
 import { OnboardingTypesScreen } from '../screens/onboarding/OnboardingTypesScreen';
 import { OnboardingGoalsScreen } from '../screens/onboarding/OnboardingGoalsScreen';
 import { OnboardingTestScreen } from '../screens/onboarding/OnboardingTestScreen';
+import { ProfileNavigator } from './profile-navigator';
 
 export type AppStackParamList = {
   Main: undefined;
+  Profile: undefined;
   Onboarding: undefined;
   OnboardingTypes: undefined;
   OnboardingGoals: undefined;
@@ -27,6 +29,7 @@ export function AppNavigator() {
       }}
     >
       <Stack.Screen name="Main" component={MainNavigator} />
+      <Stack.Screen name="Profile" component={ProfileNavigator} />
       <Stack.Screen name="Onboarding" component={OnboardingScreen} />
       <Stack.Screen name="OnboardingTypes" component={OnboardingTypesScreen} />
       <Stack.Screen name="OnboardingGoals" component={OnboardingGoalsScreen} />

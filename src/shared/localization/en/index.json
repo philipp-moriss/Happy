@@ -93,6 +93,7 @@
   "tabBar": {
     "tasks": "Tasks",
     "statistics": "Statistics",
+    "aiInsight": "AI Insight",
     "profile": "Profile"
   }
 }

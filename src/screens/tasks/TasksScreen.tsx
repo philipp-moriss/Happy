@@ -1,19 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, FlatList, TouchableOpacity, TextStyle, SafeAreaView, ViewStyle, ScrollView } from 'react-native';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
-import { observer } from 'mobx-react-lite';
 import { Ionicons } from '@expo/vector-icons';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { observer } from 'mobx-react-lite';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Button, SafeAreaView, ScrollView, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 
+import { TasksStackParamList } from '@/src/router/types';
+import { Task } from '../../entity/task/types';
 import { useStore } from '../../provider';
+import { Checkbox } from '../../shared/components/checkbox';
 import Typography from '../../shared/components/typography';
 import useTheme from '../../shared/hooks/use-theme/use-theme';
-import { Task } from '../../entity/task/types';
-import { FilterTabs, TabItem } from '../../shared/components/filter-tabs';
-import { TasksStackParamList } from '@/src/router/types';
-import { TaskStore } from '@/src/entity/task/task-store';
-import { Checkbox } from '../../shared/components/checkbox';
 
 type NavigationProp = NativeStackNavigationProp<TasksStackParamList, 'TasksList'>;
 
@@ -114,7 +112,7 @@ export const TasksScreen = observer(() => {
 
   function renderTaskItem(item: Task) {
     return (
-      <View style={styles.taskRow}>
+      <View style={styles.taskRow} key={item.id}>
         <Checkbox
           checked={item.completed}
           onPress={() => handleToggleStatus(item.id, item.completed)}
@@ -167,12 +165,20 @@ export const TasksScreen = observer(() => {
     );
   }
 
+  const handleProfilePress = () => {
+    navigation.navigate('Profile', { screen: 'ProfileHome' });
+  }
+
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.bg01 }]}>
       <View style={styles.container}>
         <Typography style={StyleSheet.flatten(styles.title)}>
           Task Tracker
         </Typography>
+        <Button
+          onPress={handleProfilePress}
+          title="Profile"
+        />
         <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 100 }}>
           {CATEGORIES.map(renderCategoryCard)}
         </ScrollView>

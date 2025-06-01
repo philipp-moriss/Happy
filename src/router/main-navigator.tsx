@@ -1,10 +1,10 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { TasksNavigator } from "./tasks-navigator";
-import { ProfileNavigator } from "./profile-navigator";
 import { StatisticsScreen } from "../screens/statistics/StatisticsScreen";
 import { TabBar } from "../shared/components/tab-bar";
 import useTranslate from "../shared/localization/use-translate";
+import { AiInsightScreen } from "../screens/ai-insight/AiInsightScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -35,11 +35,11 @@ export function MainNavigator() {
         }}
       />
       <Tab.Screen
-        name="Profile"
-        component={ProfileNavigator}
+        name="AiInsight"
+        component={AiInsightScreen}
         options={{
-          title: translate("tabBar.profile"),
-          tabBarLabel: translate("tabBar.profile"),
+          title: translate("tabBar.aiInsight"),
+          tabBarLabel: translate("tabBar.aiInsight"),
         }}
       />
     </Tab.Navigator>
