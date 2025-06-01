@@ -1,18 +1,12 @@
 // src/shared/components/tab-bar.tsx
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
-import Animated, {
-  useAnimatedStyle, useSharedValue,
-  withSpring
-} from 'react-native-reanimated';
-import { BlurView } from 'expo-blur';
 import { LIGHT } from '../hooks/use-theme/light';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Typography from "./typography";
 import { Icon } from "./icon";
 
 const { width } = Dimensions.get('window');
-const TAB_WIDTH = width / 3;
 const TAB_HEIGHT = 60;
 
 interface TabBarProps {
@@ -23,16 +17,11 @@ interface TabBarProps {
 
 export function TabBar({ state, descriptors, navigation }: TabBarProps) {
   const insets = useSafeAreaInsets();
-  const translateX = useSharedValue(0);
-
-  React.useEffect(() => {
-    translateX.value = withSpring(state.index * TAB_WIDTH);
-  }, [state.index]);
 
   const renderIcon = React.useCallback((routeName: string, isFocused: boolean) => {
     const iconProps = {
       size: 24,
-      color: isFocused ? String(LIGHT.colors.primary) : String(LIGHT.colors.text02)
+      color: isFocused ? String(LIGHT.colors.green) : '#B0B0B0',
     };
 
     const iconName = React.useMemo(() => {
@@ -51,17 +40,12 @@ export function TabBar({ state, descriptors, navigation }: TabBarProps) {
     return <Icon name={iconName} {...iconProps} />;
   }, []);
 
-  const indicatorStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: translateX.value }]
-  }));
-
   const containerHeight = TAB_HEIGHT + insets.bottom;
 
   return (
     <View style={[styles.wrapper, { height: containerHeight }]}>
-      <BlurView intensity={25} style={styles.container}>
-        <Animated.View style={[styles.indicator, indicatorStyle]} />
-        {state.routes.map((route, index) => {
+      <View style={styles.container}>
+        {state.routes.map((route: any, index: number) => {
           const { options } = descriptors[route.key as string];
           const isFocused = state.index === index;
 
@@ -87,17 +71,17 @@ export function TabBar({ state, descriptors, navigation }: TabBarProps) {
                 {renderIcon(route.name, isFocused)}
               </View>
               <Typography
-                style={[
+                style={StyleSheet.flatten([
                   styles.label,
-                  { color: isFocused ? LIGHT.colors.primary : LIGHT.colors.text02 }
-                ]}
+                  { color: isFocused ? LIGHT.colors.green : '#B0B0B0', fontWeight: isFocused ? '700' : '400' }
+                ])}
               >
                 {options.tabBarLabel}
               </Typography>
             </TouchableOpacity>
           );
         })}
-      </BlurView>
+      </View>
     </View>
   );
 }
@@ -108,12 +92,14 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: 'transparent',
+    backgroundColor: '#fff',
   },
   container: {
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    backgroundColor: '#fff',
+    borderTopWidth: 1,
+    borderTopColor: '#E5E5E5',
   },
   tab: {
     flex: 1,
@@ -122,15 +108,7 @@ const styles = StyleSheet.create({
     height: TAB_HEIGHT,
   },
   iconContainer: {
-    marginBottom: 4,
-  },
-  indicator: {
-    position: 'absolute',
-    top: 0,
-    width: TAB_WIDTH,
-    height: 3,
-    backgroundColor: String(LIGHT.colors.primary),
-    borderRadius: 1.5,
+    marginBottom: 2,
   },
   label: {
     fontSize: 12,
