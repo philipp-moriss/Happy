@@ -17,7 +17,7 @@ export function Checkbox({ checked, onPress, label, style }: CheckboxProps) {
       activeOpacity={0.7}
     >
       <View style={[styles.checkbox, checked && styles.checkboxChecked]}>
-        {checked && <View style={styles.checkmark} />}
+        {checked && <View style={[styles.checkmark, checked && styles.checkmarkChecked]} />}
       </View>
       {label && (
         <Typography regular14 style={styles.label}>
@@ -34,9 +34,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   checkbox: {
-    width: 24,
-    height: 24,
-    borderRadius: 8,
+    width: 30,
+    height: 30,
+    borderRadius: 50,
     borderWidth: 2,
     borderColor: '#EFEFEF',
     marginRight: 12,
@@ -49,10 +49,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFB800',
   },
   checkmark: {
-    width: 14,
-    height: 14,
-    borderRadius: 4,
+    width: 16,
+    height: 16,
+    borderRadius: 50,
     backgroundColor: '#FFFFFF',
+  },
+  checkmarkChecked: {
+    backgroundColor: '#3B5BDB',
   },
   label: {
     color: '#333333',
