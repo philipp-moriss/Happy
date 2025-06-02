@@ -1,12 +1,11 @@
-import React from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
-import Typography from "../../shared/components/typography";
-import useTheme from "../../shared/hooks/use-theme/use-theme";
-import useTranslate from "@/src/shared/localization/use-translate";
 import { ChangeLanguage } from "@/src/shared/actions/change-language";
 import HeaderGoBack from "@/src/shared/components/header-go-back/header-go-back";
+import useTranslate from "@/src/shared/localization/use-translate";
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Typography from "../../shared/components/typography";
+import useTheme from "../../shared/hooks/use-theme/use-theme";
 
 export const SettingsScreen = () => {
   const { colors } = useTheme();
@@ -37,6 +36,8 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     padding: 20,
+    justifyContent: "center",
+    alignItems: "center",
   },
   title: {
     fontSize: 24,

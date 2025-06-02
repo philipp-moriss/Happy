@@ -80,7 +80,7 @@ export const AiInsightScreen = observer(() => {
     setAnalysisStatus('pending');
     queryMistralAI(JSON.stringify(taskStore.tasks))
       .then((data) => {
-        setInsight(data?.insight || translate("aiInsight.defaultInsight"));
+        setInsight(data || translate("aiInsight.defaultInsight"));
         setAnalysisStatus('complete');
       })
       .catch(() => {

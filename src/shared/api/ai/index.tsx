@@ -1,4 +1,4 @@
-const API_KEY = "OpgQBFYEI81yYqPnLWkAzcc2UbdEUJv3";
+const API_KEY = "jRm4SPvdy1jYqpFy6EQJ25NukeSeTUAe";
 const API_URL = "https://api.mistral.ai/v1/agents/completions";
 
 export const queryMistralAI = async (prompt: string) => {
@@ -10,7 +10,7 @@ export const queryMistralAI = async (prompt: string) => {
         "Authorization": `Bearer ${API_KEY}`,
       },
       body: JSON.stringify({
-        agent_id: 'ag:cff420e9:20250223:mynewpromt:8911eca7',
+        agent_id: 'ag:11e2ce62:20250602:untitled-agent:47e3e32a',
         messages: [{ role: "user", content: prompt }],
       }),
     });
