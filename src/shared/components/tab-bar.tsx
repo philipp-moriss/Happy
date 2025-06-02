@@ -32,6 +32,8 @@ export function TabBar({ state, descriptors, navigation }: TabBarProps) {
           return 'bar-chart';
         case 'Profile':
           return 'person';
+        case 'AiInsight':
+          return 'info-outline';
         default:
           return 'help-outline';
       }

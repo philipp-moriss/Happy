@@ -68,31 +68,19 @@ const CATEGORY_META: Record<
   {
     color: string;
     icon: keyof typeof Ionicons.glyphMap;
-    title: string;
-    subtitle: string;
-    advice: string;
   }
 > = {
   eudaimonic: {
     color: "#6C7AF2",
     icon: "happy-outline",
-    title: "Eudaimonic",
-    subtitle: "Personal growth tasks",
-    advice: "Need more focus on personal development",
   },
   hedonic: {
     color: "#F26CA7",
     icon: "heart-outline",
-    title: "Hedonic",
-    subtitle: "Pleasure & enjoyment",
-    advice: "Highest category - good work-life balance",
   },
   psychological: {
     color: "#6CF2B2",
     icon: "leaf-outline",
-    title: "Mental Wealth",
-    subtitle: "Mindfulness & wellbeing",
-    advice: "Consider adding more mindfulness activities",
   },
 };
 
@@ -130,9 +118,6 @@ export const StatisticsScreen = observer(() => {
     const meta = CATEGORY_META[key] || {
       color: "#CCCCCC",
       icon: "help-circle-outline",
-      title: key,
-      subtitle: "",
-      advice: "",
     };
     const percent =
       totalTasks > 0 ? Math.round((tasks.length / totalTasks) * 100) : 0;
@@ -140,15 +125,21 @@ export const StatisticsScreen = observer(() => {
     return {
       key,
       ...meta,
+      // @ts-ignore
+      title: translate('statistics.categories.' + key),
+      // @ts-ignore
+      subtitle: translate('statistics.subtitles.' + key),
+      // @ts-ignore
+      advice: translate('statistics.advices.' + key),
       percent,
       progress,
-    };
+    } as { key: string; color: string; icon: keyof typeof Ionicons.glyphMap; title: string; subtitle: string; advice: string; percent: number; progress: number };
   });
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.bg01 }]}>
       <View style={{ paddingHorizontal: 20 }}>
-        <HeaderGoBack title="Statistics" showArrowBack={false} />
+        <HeaderGoBack title={translate("statistics.title")} showArrowBack={false} />
         <ScrollView
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
@@ -160,7 +151,7 @@ export const StatisticsScreen = observer(() => {
             style={[styles.chartContainer, { backgroundColor: colors.bg02 }]}
           >
             <Typography style={styles.chartTitle}>
-              Category Distribution
+              {translate("statistics.categoryDistribution")}
             </Typography>
             {hasData ? (
               <>
@@ -169,7 +160,7 @@ export const StatisticsScreen = observer(() => {
             ) : (
               <View style={styles.emptyState}>
                 <Typography style={styles.emptyStateText}>
-                  {translate("statistics.noData")}
+                  {translate('statistics.noData')}
                 </Typography>
               </View>
             )}
@@ -188,11 +179,15 @@ export const StatisticsScreen = observer(() => {
             ) : (
               <View style={styles.emptyState}>
                 <Typography style={styles.emptyStateText}>
-                  {translate("statistics.noData")}
+                  {translate('statistics.noData')}
                 </Typography>
               </View>
             )}
           </View>
+          {/* Рандомный совет под графиком */}
+          <Typography style={styles.randomAdvice}>
+            {translate("statistics.randomAdvice", { advice: categoryStats.length > 0 ? categoryStats[Math.floor(Math.random() * categoryStats.length)].advice : "" })}
+          </Typography>
         </ScrollView>
       </View>
     </SafeAreaView>

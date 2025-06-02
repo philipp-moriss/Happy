@@ -66,13 +66,30 @@
   },
   "statistics": {
     "title": "Статистика",
+    "noData": "Нет данных для отображения",
+    "categories": {
+      "eudaimonic": "Эвдемонические",
+      "hedonic": "Гедонические",
+      "psychological": "Психологические"
+    },
+    "subtitles": {
+      "eudaimonic": "Задачи для личностного роста",
+      "hedonic": "Удовольствие и радость",
+      "psychological": "Осознанность и благополучие"
+    },
+    "advices": {
+      "eudaimonic": "Нужно больше внимания развитию себя",
+      "hedonic": "Самая высокая категория — хороший work-life баланс",
+      "psychological": "Добавьте больше практик осознанности"
+    },
+    "categoryDistribution": "Распределение по категориям",
+    "activity": "Активность",
+    "randomAdvice": "Совет дня: {{advice}}",
     "stats": {
       "total": "Всего задач",
       "completed": "Выполнено",
       "inProgress": "В процессе"
     },
-    "categories": "Распределение по категориям",
-    "activity": "Активность",
     "trends": "Тренды",
     "completionRate": "Процент выполнения",
     "activeTasks": "Активные задачи",

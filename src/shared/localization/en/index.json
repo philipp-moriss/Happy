@@ -66,17 +66,25 @@
   },
   "statistics": {
     "title": "Statistics",
-    "stats": {
-      "total": "Total Tasks",
-      "completed": "Completed",
-      "inProgress": "In Progress"
+    "categories": {
+      "eudaimonic": "Eudaimonic",
+      "hedonic": "Hedonic",
+      "psychological": "Mental Wealth"
     },
-    "categories": "Categories Distribution",
+    "noData": "No data",
+    "subtitles": {
+      "eudaimonic": "Personal growth tasks",
+      "hedonic": "Pleasure & enjoyment",
+      "psychological": "Mindfulness & wellbeing"
+    },
+    "advices": {
+      "eudaimonic": "Need more focus on personal development",
+      "hedonic": "Highest category - good work-life balance",
+      "psychological": "Consider adding more mindfulness activities"
+    },
+    "categoryDistribution": "Category Distribution",
     "activity": "Activity",
-    "trends": "Trends",
-    "completionRate": "Completion Rate",
-    "activeTasks": "Active Tasks",
-    "noData": "No data to display"
+    "randomAdvice": "Tip of the day: {{advice}}"
   },
   "categories": {
     "hedonic": "hedonic",
