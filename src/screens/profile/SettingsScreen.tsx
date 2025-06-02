@@ -6,6 +6,7 @@ import Typography from "../../shared/components/typography";
 import useTheme from "../../shared/hooks/use-theme/use-theme";
 import useTranslate from "@/src/shared/localization/use-translate";
 import { ChangeLanguage } from "@/src/shared/actions/change-language";
+import HeaderGoBack from "@/src/shared/components/header-go-back/header-go-back";
 
 export const SettingsScreen = () => {
   const { colors } = useTheme();
@@ -13,6 +14,7 @@ export const SettingsScreen = () => {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.bg01 }]}>
+      <HeaderGoBack showArrowBack={true} withProfile={false} />
       <View style={styles.content}>
         <Typography
           style={StyleSheet.flatten([styles.title, { color: colors.text01 }])}

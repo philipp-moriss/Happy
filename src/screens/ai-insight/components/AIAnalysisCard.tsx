@@ -3,6 +3,7 @@ import { View, StyleSheet } from "react-native";
 import Typography from "../../../shared/components/typography";
 import Button from "../../../shared/components/button";
 import { StatusText } from "../../../shared/components/status";
+import useTranslate from "../../../shared/localization/use-translate";
 
 // Карточка AI-анализа: статус, инсайт, кнопка Analyze
 interface AIAnalysisCardProps {
@@ -13,10 +14,11 @@ interface AIAnalysisCardProps {
 }
 
 export function AIAnalysisCard({ status, insight, onAnalyze, isLoading }: AIAnalysisCardProps) {
+  const { translate } = useTranslate();
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Typography style={styles.title}>AI Analysis</Typography>
+        <Typography style={styles.title}>{translate("aiInsight.aiAnalysis.title")}</Typography>
         <StatusText type={status === "complete" ? "success" : "pending"} style={styles.status} />
       </View>
       <Typography style={styles.insight}>{insight}</Typography>
@@ -25,7 +27,13 @@ export function AIAnalysisCard({ status, insight, onAnalyze, isLoading }: AIAnal
         onPress={onAnalyze}
         disabled={isLoading || status === "complete"}
       >
-        <Typography>{isLoading ? "Analyzing..." : status === "complete" ? "Complete" : "Analyze"}</Typography>
+        <Typography>
+          {isLoading
+            ? translate("aiInsight.aiAnalysis.analyzing")
+            : status === "complete"
+            ? translate("aiInsight.aiAnalysis.complete")
+            : translate("aiInsight.aiAnalysis.analyze")}
+        </Typography>
       </Button>
     </View>
   );

@@ -95,5 +95,53 @@
     "statistics": "Statistics",
     "aiInsight": "AI Insight",
     "profile": "Profile"
+  },
+  "aiInsight": {
+    "happiness": {
+      "title": "Your happiness level",
+      "excellent": "Excellent balance!",
+      "good": "Good balance! Room to grow",
+      "needMore": "Time to add more joy and meaning!"
+    },
+    "aiAnalysis": {
+      "title": "AI Analysis",
+      "analyzing": "Analyzing...",
+      "complete": "Complete",
+      "analyze": "Analyze"
+    },
+    "analyzePrompt": "Analyze your tasks for personal recommendations!",
+    "defaultInsight": "You have a healthy foundation, but you can add more meaningful activities.",
+    "error": "Analysis error. Please try again later.",
+    "personalRecommendations": "Personal recommendations",
+    "recommendations": {
+      "eudaimonic": {
+        "title": "Eudaimonic tasks",
+        "description": "Add a new hobby or volunteering for more meaning."
+      },
+      "hedonic": {
+        "title": "Hedonic tasks",
+        "description": "Plan a pleasant event for the weekend."
+      },
+      "mental": {
+        "title": "Mental health",
+        "description": "Add breathing exercises or a walk in nature."
+      },
+      "week": {
+        "title": "Priority of the week",
+        "description": "Focus on 1-2 eudaimonic tasks."
+      },
+      "status": {
+        "Priority": "Priority",
+        "Good": "Good",
+        "Improve": "Improve"
+      }
+    },
+    "advices": {
+      "0": "Try a new activity this week!",
+      "1": "Spend time outdoors.",
+      "2": "Call a friend or loved one.",
+      "3": "Do something kind for yourself or others."
+    },
+    "randomButton": "Random advice"
   }
 }

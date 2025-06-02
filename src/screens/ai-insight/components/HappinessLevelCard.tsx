@@ -2,6 +2,7 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Typography from "../../../shared/components/typography";
+import useTranslate from "../../../shared/localization/use-translate";
 
 // Компонент карточки уровня счастья
 // Показывает эмодзи, уровень счастья, подпись и градиентный фон
@@ -11,6 +12,7 @@ interface HappinessLevelCardProps {
 }
 
 export function HappinessLevelCard({ happinessLevel, description }: HappinessLevelCardProps) {
+  const { translate } = useTranslate();
   // Выбираем эмодзи по уровню счастья
   function getEmoji(level: number) {
     if (level >= 8) return "😃";
@@ -29,7 +31,7 @@ export function HappinessLevelCard({ happinessLevel, description }: HappinessLev
       <View style={styles.emojiContainer}>
         <Typography style={styles.emoji}>{getEmoji(happinessLevel)}</Typography>
       </View>
-      <Typography style={styles.title}>Ваш уровень счастья</Typography>
+      <Typography style={styles.title}>{translate("aiInsight.happiness.title")}</Typography>
       <Typography style={styles.level}>{happinessLevel.toFixed(1)}/10</Typography>
       <Typography style={styles.description}>{description}</Typography>
     </LinearGradient>

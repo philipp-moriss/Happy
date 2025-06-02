@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, ScrollView, SafeAreaView, Alert } from "react-native";
+import { StyleSheet, View, ScrollView, SafeAreaView } from "react-native";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../provider";
 import Typography from "../../shared/components/typography";
@@ -10,6 +10,7 @@ import { HappinessLevelCard } from "./components/HappinessLevelCard";
 import { AIAnalysisCard } from "./components/AIAnalysisCard";
 import { RecommendationCard } from "./components/RecommendationCard";
 import useTheme from "@/src/shared/hooks/use-theme/use-theme";
+import Button from "@/src/shared/components/button";
 
 export const AiInsightScreen = observer(() => {
   const { taskStore } = useStore();
@@ -25,42 +26,53 @@ export const AiInsightScreen = observer(() => {
 
   const happinessLevel = Math.min(10, Math.max(0, 7.2 + (taskStore.completedTasks.length - 2) * 0.2));
   const happinessDescription = happinessLevel >= 8
-    ? "Отличный баланс!"
+    ? translate("aiInsight.happiness.excellent")
     : happinessLevel >= 6
-    ? "Хороший баланс! Есть куда расти"
-    : "Время добавить больше радости и смысла!";
+    ? translate("aiInsight.happiness.good")
+    : translate("aiInsight.happiness.needMore");
 
   const recommendations = [
     {
-      title: "Эвдемонические задачи",
-      description: "Добавьте новое хобби или волонтёрство для большего смысла.",
+      title: translate("aiInsight.recommendations.eudaimonic.title"),
+      description: translate("aiInsight.recommendations.eudaimonic.description"),
       status: "Priority" as const,
       color: "#6C7AF2",
       boost: "+1.3",
     },
     {
-      title: "Гедонические задачи",
-      description: "Запланируйте приятное событие на выходных.",
+      title: translate("aiInsight.recommendations.hedonic.title"),
+      description: translate("aiInsight.recommendations.hedonic.description"),
       status: "Good" as const,
       color: "#F26CA7",
       boost: undefined,
     },
     {
-      title: "Ментальное здоровье",
-      description: "Добавьте дыхательные упражнения или прогулку на природе.",
+      title: translate("aiInsight.recommendations.mental.title"),
+      description: translate("aiInsight.recommendations.mental.description"),
       status: "Improve" as const,
       color: "#6CF2B2",
       boost: "+0.8",
     },
     {
-      title: "Приоритет недели",
-      description: "Сфокусируйтесь на 1-2 эвдемонических задачах.",
+      title: translate("aiInsight.recommendations.week.title"),
+      description: translate("aiInsight.recommendations.week.description"),
       status: "Priority" as const,
       color: "#FFD36C",
       boost: "+1.1",
     },
   ];
 
+  // Рандомный совет
+  const advices = [
+    translate("aiInsight.advices.0"),
+    translate("aiInsight.advices.1"),
+    translate("aiInsight.advices.2"),
+    translate("aiInsight.advices.3"),
+  ];
+  const [randomAdvice, setRandomAdvice] = useState("");
+  function handleRandomAdvice() {
+    setRandomAdvice(advices[Math.floor(Math.random() * advices.length)]);
+  }
 
   // AI анализ (запрос к ИИ)
   function handleAnalyze() {
@@ -68,11 +80,11 @@ export const AiInsightScreen = observer(() => {
     setAnalysisStatus('pending');
     queryMistralAI(JSON.stringify(taskStore.tasks))
       .then((data) => {
-        setInsight(data?.insight || "У вас здоровый фундамент, но можно добавить больше осмысленных активностей.");
+        setInsight(data?.insight || translate("aiInsight.defaultInsight"));
         setAnalysisStatus('complete');
       })
       .catch(() => {
-        setInsight("Ошибка анализа. Попробуйте позже.");
+        setInsight(translate("aiInsight.error"));
         setAnalysisStatus('pending');
       })
       .finally(() => setIsLoading(false));
@@ -87,12 +99,20 @@ export const AiInsightScreen = observer(() => {
         {/* AI анализ */}
         <AIAnalysisCard
           status={analysisStatus}
-          insight={insight || "Анализируйте задачи для персональных рекомендаций!"}
+          insight={insight || translate("aiInsight.analyzePrompt")}
           onAnalyze={handleAnalyze}
           isLoading={isLoading}
         />
 
-        <Typography style={styles.sectionTitle}>Персональные рекомендации</Typography>
+        {/* Рандомный совет */}
+        <Typography style={styles.randomAdvice}>{randomAdvice}</Typography>
+        <View style={{ alignItems: 'center', marginBottom: 16 }}>
+          <Button onPress={handleRandomAdvice}>
+            <Typography>{translate("aiInsight.randomButton")}</Typography>
+          </Button>
+        </View>
+
+        <Typography style={styles.sectionTitle}>{translate("aiInsight.personalRecommendations")}</Typography>
         {recommendations.map((rec, i) => (
           <RecommendationCard key={i} {...rec} />
         ))}

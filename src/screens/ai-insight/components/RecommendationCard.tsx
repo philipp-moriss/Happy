@@ -1,6 +1,7 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import Typography from "../../../shared/components/typography";
+import useTranslate from "../../../shared/localization/use-translate";
 
 // Карточка рекомендации: цвет, статус, заголовок, описание
 interface RecommendationCardProps {
@@ -12,7 +13,8 @@ interface RecommendationCardProps {
 }
 
 export function RecommendationCard({ title, description, status, color, boost }: RecommendationCardProps) {
-  // Цвет статуса
+  const { translate } = useTranslate();
+  // Цвет статуса через перевод
   const statusColor = {
     Priority: "#6C7AF2",
     Good: "#6CF2B2",
@@ -22,7 +24,9 @@ export function RecommendationCard({ title, description, status, color, boost }:
   return (
     <View style={[styles.container, { borderLeftColor: color }]}> 
       <View style={styles.header}>
-        <Typography style={Object.assign({}, styles.status, statusColor ? { color: statusColor } : {})}>{status}</Typography>
+        <Typography style={Object.assign({}, styles.status, statusColor ? { color: statusColor } : {})}>
+          {translate(`aiInsight.recommendations.status.${status}`)}
+        </Typography>
         {boost && <Typography style={styles.boost}>+{boost}</Typography>}
       </View>
       <Typography style={styles.title}>{title}</Typography>
