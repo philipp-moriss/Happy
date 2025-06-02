@@ -7,7 +7,7 @@ import useTranslate from "../../../shared/localization/use-translate";
 
 // Карточка AI-анализа: статус, инсайт, кнопка Analyze
 interface AIAnalysisCardProps {
-  status: "complete" | "pending";
+  status: "complete" | "pending" | "idle";
   insight: string;
   onAnalyze: () => void;
   isLoading?: boolean;
@@ -19,7 +19,7 @@ export function AIAnalysisCard({ status, insight, onAnalyze, isLoading }: AIAnal
     <View style={styles.container}>
       <View style={styles.header}>
         <Typography style={styles.title}>{translate("aiInsight.aiAnalysis.title")}</Typography>
-        <StatusText type={status === "complete" ? "success" : "pending"} style={styles.status} />
+        <StatusText type={status === "complete" ? "success" : status === "pending" ? "pending" : "idle"} style={styles.status} />
       </View>
       <Typography style={styles.insight}>{insight}</Typography>
       <Button

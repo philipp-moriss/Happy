@@ -17,7 +17,7 @@ export const AiInsightScreen = observer(() => {
   const { colors } = useTheme();
   const { translate } = useTranslate();
   const [isLoading, setIsLoading] = useState(false);
-  const [analysisStatus, setAnalysisStatus] = useState<'pending' | 'complete'>('pending');
+  const [analysisStatus, setAnalysisStatus] = useState<'idle' | 'pending' | 'complete'>('idle');
   const [insight, setInsight] = useState('');
 
   useEffect(() => {

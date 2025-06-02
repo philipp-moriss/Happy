@@ -2,7 +2,8 @@
   "status": {
     "success": "success",
     "pending": "pending",
-    "error": "error"
+    "error": "error",
+    "idle": "idle"
   },
   "home": {
     "title": "Home",

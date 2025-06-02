@@ -6,7 +6,7 @@ import useTheme from "../hooks/use-theme/use-theme";
 import { ColorValue } from "react-native";
 import useTranslate from "../localization/use-translate";
 
-type StatusType = "success" | "pending" | "error";
+type StatusType = "success" | "pending" | "error" | "idle";
 
 interface StatusTextProps extends ITextProps {
   type: StatusType;
@@ -16,6 +16,7 @@ export const StatusText: React.FC<StatusTextProps> = ({ type, ...rest }) => {
   const { colors } = useTheme();
   const statusColor: Record<StatusType, ColorValue> = {
     success: colors.green,
+    idle: colors.pink,
     pending: colors.yellow,
     error: colors.red,
   };
@@ -24,6 +25,7 @@ export const StatusText: React.FC<StatusTextProps> = ({ type, ...rest }) => {
     success: "#E8F5E9",
     pending: "#FFF3E0",
     error: "#FFEBEE",
+    idle: "#FFE3E3",
   };
 
   const { translate } = useTranslate();
