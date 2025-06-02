@@ -143,5 +143,21 @@
       "3": "Do something kind for yourself or others."
     },
     "randomButton": "Random advice"
+  },
+  "taskScreen": {
+    "title": "Task Tracker",
+    "categories": {
+      "eudaimonic": "Eudaimonic",
+      "hedonic": "Hedonic",
+      "psychological": "Psychological"
+    },
+    "empty": "No tasks yet",
+    "randomTasks": {
+      "eudaimonic": "Learn a new skill",
+      "hedonic": "Watch favorite movie",
+      "psychological": "Meditation session"
+    },
+    "addRandomTask": "Add random task to {{category}}",
+    "addTask": "Add task to {{category}}"
   }
 }

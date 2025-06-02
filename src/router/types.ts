@@ -6,7 +6,9 @@ export type RootStackParamList = {
 
 export type TasksStackParamList = {
   TasksList: undefined;
-  TaskForm: undefined;
+  TaskForm: {
+    category?: string;
+  };
   TaskDetails: { taskId: string };
   TaskEdit: { taskId: string };
 };

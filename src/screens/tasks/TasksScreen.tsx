@@ -38,19 +38,19 @@ interface Styles {
 const CATEGORIES = [
   {
     key: 'eudaimonic',
-    label: 'Eudaimonic',
+    labelKey: 'taskScreen.categories.eudaimonic',
     color: '#E6EDFF',
     accent: '#3B5BDB',
   },
   {
     key: 'hedonic',
-    label: 'Hedonic',
+    labelKey: 'taskScreen.categories.hedonic',
     color: '#FFE6F0',
     accent: '#E64980',
   },
   {
     key: 'psychological',
-    label: 'Psychological',
+    labelKey: 'taskScreen.categories.psychological',
     color: '#E6FFF3',
     accent: '#20C997',
   },
@@ -87,17 +87,12 @@ export const TasksScreen = observer(() => {
 
   function handleAddTaskToCategory(category: CategoryKey) {
     taskStore.setSelectedType(category);
-    navigation.navigate('TaskForm');
+    navigation.navigate('TaskForm', { category });
   }
 
   function handleRandomTask(category: CategoryKey) {
-    const randomTitles: Record<CategoryKey, string> = {
-      eudaimonic: 'Learn a new skill',
-      hedonic: 'Watch favorite movie',
-      psychological: 'Meditation session',
-    };
     taskStore.createTask({
-      title: randomTitles[category],
+      title: t(`taskScreen.randomTasks.${category}`),
       description: '',
       amount: 1,
       category,
@@ -136,27 +131,27 @@ export const TasksScreen = observer(() => {
       >
         <View style={styles.categoryHeader}>
           <Typography style={StyleSheet.flatten([styles.categoryTitle, { color: category.accent }])}> 
-            {category.label}
+            {t(category.labelKey)}
           </Typography>
           <View style={{ flexDirection: 'row', gap: 12 }}>
             <TouchableOpacity
               style={[styles.circleButton, { backgroundColor: category.accent }]}
               onPress={() => handleRandomTask(category.key as CategoryKey)}
-              accessibilityLabel={`Add random task to ${category.label}`}
+              accessibilityLabel={t('taskScreen.addRandomTask', { category: t(category.labelKey) })}
             >
               <Ionicons name="sparkles-outline" size={22} color="#fff" />
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.circleButton, { backgroundColor: category.accent }]}
               onPress={() => handleAddTaskToCategory(category.key as CategoryKey)}
-              accessibilityLabel={`Add task to ${category.label}`}
+              accessibilityLabel={t('taskScreen.addTask', { category: t(category.labelKey) })}
             >
               <Ionicons name="add" size={22} color="#fff" />
             </TouchableOpacity>
           </View>
         </View>
         {tasks && tasks.length === 0 ? (
-          <Typography style={styles.emptyText}>No tasks yet</Typography>
+          <Typography style={styles.emptyText}>{t('taskScreen.empty')}</Typography>
         ) : (
           tasks?.map((task: Task) => renderTaskItem(task))
         )}
@@ -167,7 +162,7 @@ export const TasksScreen = observer(() => {
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.bg01 }]}>
       <View style={styles.container}>
-        <HeaderGoBack title="Task Tracker" showArrowBack={false}/>
+        <HeaderGoBack title={t('taskScreen.title')} showArrowBack={false}/>
         <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 100, paddingTop: 20 }}>
           {CATEGORIES.map(renderCategoryCard)}
         </ScrollView>

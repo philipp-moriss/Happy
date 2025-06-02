@@ -143,5 +143,21 @@
       "3": "Сделайте что-то доброе для себя или других."
     },
     "randomButton": "Рандомный совет"
+  },
+  "taskScreen": {
+    "title": "Трекер задач",
+    "categories": {
+      "eudaimonic": "Эвдемонические",
+      "hedonic": "Гедонические",
+      "psychological": "Психологические"
+    },
+    "empty": "Пока нет задач",
+    "randomTasks": {
+      "eudaimonic": "Освойте новый навык",
+      "hedonic": "Посмотрите любимый фильм",
+      "psychological": "Сеанс медитации"
+    },
+    "addRandomTask": "Добавить случайную задачу в {{category}}",
+    "addTask": "Добавить задачу в {{category}}"
   }
 }

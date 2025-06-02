@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {View, StyleSheet, ScrollView, TouchableOpacity, TextStyle} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {RouteProp, useNavigation} from '@react-navigation/native';
 import {observer} from 'mobx-react-lite';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Ionicons} from '@expo/vector-icons';
@@ -13,17 +13,19 @@ import {CategoryChips} from '../../shared/components/category-chips';
 import useTheme from '../../shared/hooks/use-theme/use-theme';
 import TextInputs from "@/src/shared/components/text-input";
 import { Category } from '@/src/entity/task/types';
+import { TasksStackParamList } from '@/src/router/types';
 
-export const TaskFormScreen = observer(() => {
+export const TaskFormScreen = observer(({route}: {route: RouteProp<TasksStackParamList, 'TaskForm'>}) => {
     const navigation = useNavigation();
     const {taskStore} = useStore();
     const theme = useTheme();
     const {t} = useTranslation();
+    const {category: categoryParam} = route.params;
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [amount, setAmount] = useState('');
-    const [category, setCategory] = useState<Category>('hedonic');
+    const [category, setCategory] = useState<Category>(categoryParam as Category);
     const [showProgress, setShowProgress] = useState(true);
 
     const handleSubmit = async () => {
