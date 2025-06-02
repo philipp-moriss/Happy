@@ -4,7 +4,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SafeAreaView, ScrollView, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { TasksStackParamList } from '@/src/router/types';
 import HeaderGoBack from '@/src/shared/components/header-go-back/header-go-back';
@@ -18,22 +18,6 @@ type NavigationProp = NativeStackNavigationProp<TasksStackParamList, 'TasksList'
 
 type FilterType = 'all' | 'active' | 'completed';
 
-interface Styles {
-  safeArea: ViewStyle;
-  container: ViewStyle;
-  header: ViewStyle;
-  title: TextStyle;
-  addButton: ViewStyle;
-  list: ViewStyle;
-  taskItem: ViewStyle;
-  taskContent: ViewStyle;
-  checkbox: ViewStyle;
-  taskInfo: ViewStyle;
-  taskTitle: TextStyle;
-  taskDescription: TextStyle;
-  taskDate: TextStyle;
-  deleteButton: ViewStyle;
-}
 
 const CATEGORIES = [
   {
