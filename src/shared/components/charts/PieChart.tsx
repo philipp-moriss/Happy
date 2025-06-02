@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Dimensions, StyleSheet, ColorValue } from 'react-native';
 import { PieChart as RNChart } from 'react-native-chart-kit';
 import Typography from '../typography';
-import { useTheme } from '../../hooks/use-theme';
+import useTheme from "@/src/shared/hooks/use-theme/use-theme";
 
 interface PieChartProps {
   data: Array<{
@@ -26,14 +26,14 @@ export function PieChart({ data }: PieChartProps) {
     name: item.name,
     value: item.value,
     color: item.color,
-    legendFontColor: colors.text,
+    legendFontColor: colors.text01,
     legendFontSize: 12,
   }));
 
   const chartConfig = {
-    backgroundColor: colors.background,
-    backgroundGradientFrom: colors.background,
-    backgroundGradientTo: colors.background,
+    backgroundColor: colors.bg01,
+    backgroundGradientFrom: colors.bg01,
+    backgroundGradientTo: colors.bg01,
     color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
   };
 
@@ -44,7 +44,7 @@ export function PieChart({ data }: PieChartProps) {
         width={chartWidth}
         height={220}
         hasLegend={false}
-        chartConfig={chartConfig}
+        chartConfig={chartConfig as any}
         accessor="value"
         backgroundColor="transparent"
         paddingLeft="0"

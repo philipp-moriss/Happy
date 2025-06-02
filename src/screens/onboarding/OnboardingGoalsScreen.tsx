@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { Ionicons } from '@expo/vector-icons';
 
 import Typography from '../../shared/components/typography';
-import { useTheme } from '../../shared/hooks/use-theme';
+import useTheme from "@/src/shared/hooks/use-theme/use-theme";
 import { useStore } from '../../provider';
 import { OnboardingStackParamList } from '../../router/onboarding-navigator';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -72,7 +72,7 @@ export const OnboardingGoalsScreen = observer(() => {
     const isSelected = selectedGoals.includes(goal.id);
     const cardStyle = [
       styles.goalCard,
-      { backgroundColor: colors.card },
+      { backgroundColor: colors.bg02 },
       isSelected && { borderColor: colors.primary, borderWidth: 2 },
     ];
 
@@ -83,7 +83,7 @@ export const OnboardingGoalsScreen = observer(() => {
         onPress={() => handleGoalToggle(goal.id)}
       >
         <View style={styles.goalContent}>
-          <View style={[styles.checkbox, { borderColor: colors.border }]}>
+          <View style={[styles.checkbox, { borderColor: colors.bg03 }]}>
             {isSelected && (
               <Ionicons name="checkmark" size={20} color={colors.primary} />
             )}
@@ -100,7 +100,7 @@ export const OnboardingGoalsScreen = observer(() => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <View style={[styles.container, { backgroundColor: colors.bg01 }]}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <Typography style={styles.title}>Выберите цели</Typography>
         <Typography style={[styles.subtitle, { color: colors.text02 }]}>

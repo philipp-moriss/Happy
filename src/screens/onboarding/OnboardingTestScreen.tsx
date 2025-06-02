@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { Ionicons } from '@expo/vector-icons';
 
 import Typography from '../../shared/components/typography';
-import { useTheme } from '../../shared/hooks/use-theme';
+import useTheme from "@/src/shared/hooks/use-theme/use-theme";
 import { useStore } from '../../provider';
 import { OnboardingStackParamList } from '../../router/onboarding-navigator';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -81,13 +81,13 @@ export const OnboardingTestScreen = observer(() => {
               key={option.id}
               style={[
                 styles.optionButton,
-                { backgroundColor: colors.card },
+                { backgroundColor: colors.bg02 },
                 isSelected(option.id) && { borderColor: colors.primary, borderWidth: 2 },
               ]}
               onPress={() => handleAnswer(question.id, option.id)}
             >
               <View style={styles.optionContent}>
-                <View style={[styles.radio, { borderColor: colors.border }]}>
+                <View style={[styles.radio, { borderColor: colors.bg03 }]}>
                   {isSelected(option.id) && (
                     <View style={[styles.radioInner, { backgroundColor: colors.primary }]} />
                   )}
@@ -104,7 +104,7 @@ export const OnboardingTestScreen = observer(() => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <View style={[styles.container, { backgroundColor: colors.bg01 }]}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <Typography style={styles.title}>Тест на баланс</Typography>
         <Typography style={[styles.subtitle, { color: colors.text02 }]}>
@@ -123,7 +123,7 @@ export const OnboardingTestScreen = observer(() => {
               ]}
             />
           </View>
-          <Typography style={[styles.progressText, { color: colors.text02 }]}>
+          <Typography style={styles.progressText}>
             Вопрос {currentQuestion + 1} из {questions.length}
           </Typography>
         </View>

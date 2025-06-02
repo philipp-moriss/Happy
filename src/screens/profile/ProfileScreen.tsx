@@ -1,27 +1,28 @@
-import React, { useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import * as ImagePicker from "expo-image-picker";
+import { observer } from "mobx-react-lite";
+import React, { useEffect, useState } from "react";
 import {
-  View,
+  Alert,
+  Image,
+  SafeAreaView,
   StyleSheet,
   TouchableOpacity,
-  ScrollView,
-  SafeAreaView,
-  Image,
-  Alert,
-  TextStyle,
+  View,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { observer } from "mobx-react-lite";
-import { Ionicons } from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
+import { ProfileStackParamList } from "@/src/router/types";
+import HeaderGoBack from "@/src/shared/components/header-go-back/header-go-back";
+import { Icon } from "@/src/shared/components/icon";
+import useTranslate from "@/src/shared/localization/use-translate";
+import { useStore } from "../../provider";
 import Typography from "../../shared/components/typography";
 import useTheme from "../../shared/hooks/use-theme/use-theme";
-import { useStore } from "../../provider";
-import Button from "../../shared/components/button";
-import useTranslate from "@/src/shared/localization/use-translate";
-import { ProfileStackParamList } from "@/src/router/types";
-import { ArrowBackIIcon } from "@/src/shared/icons/icons/arrow-back-i";
+import { getUser, saveUser, User } from "@/src/shared/utils/user";
+import { Input } from "@/src/shared/components";
+import Button from "@/src/shared/components/button";
 
 type ProfileScreenNavigationProp = NativeStackNavigationProp<
   ProfileStackParamList,
@@ -33,27 +34,22 @@ export const ProfileScreen = observer(() => {
   const { taskStore } = useStore();
   const { colors } = useTheme();
   const { translate } = useTranslate();
+  const [isEdit, setIsEdit] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
   const [avatar, setAvatar] = useState<string | null>(null);
+  const [name, setName] = useState<string | null>("User");
 
-  const handleLogout = () => {
-    Alert.alert(
-      translate("profile.logoutConfirm.title"),
-      translate("profile.logoutConfirm.message"),
-      [
-        {
-          text: translate("profile.logoutConfirm.cancel"),
-          style: "cancel",
-        },
-        {
-          text: translate("profile.logoutConfirm.confirm"),
-          style: "destructive",
-          onPress: () => {
-            // TODO: Implement logout logic
-          },
-        },
-      ]
-    );
-  };
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    getUser().then((user) => {
+      if (user) {
+        setUser(user);
+        setName(user.name);
+        setAvatar(user.avatar);
+      }
+    });
+  }, [isFocused]);
 
   const handleChangeAvatar = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -75,7 +71,8 @@ export const ProfileScreen = observer(() => {
 
     if (!result.canceled) {
       setAvatar(result.assets[0].uri);
-      // TODO: Upload avatar to server
+      setUser({ name: user?.name ?? 'User', avatar: result.assets[0].uri });
+      saveUser({ name: user?.name ?? 'User', avatar: result.assets[0].uri });
     }
   };
 
@@ -121,112 +118,111 @@ export const ProfileScreen = observer(() => {
       onPress: () => navigation.navigate("Settings"),
       icon: "settings",
     },
-    {
-      id: "notifications",
-      title: translate("profile.menu.notifications"),
-      onPress: () => {
-        // TODO: Implement notifications logic
-      },
-      icon: "notifications",
-    },
-    {
-      id: "help",
-      title: translate("profile.menu.help"),
-      onPress: () => {
-        // TODO: Implement help logic
-      },
-      icon: "help-circle",
-    },
-    {
-      id: "about",
-      title: translate("profile.menu.about"),
-      onPress: () => {
-        // TODO: Implement about logic
-      },
-      icon: "information-circle",
-    },
   ];
+
+  const handleSave = () => {
+    setIsEdit(false);
+    if (!user) return;
+    setUser({ name: name ?? 'User', avatar: user.avatar });
+    saveUser({ name: name ?? 'User', avatar: user.avatar });
+  };
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.bg01 }]}>
-      <TouchableOpacity
-        onPress={() => {
-          navigation.goBack();
-        }}
-      >
-        <ArrowBackIIcon />
-      </TouchableOpacity>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <View style={[styles.header, { backgroundColor: colors.bg02 }]}>
-          <TouchableOpacity
-            onPress={handleChangeAvatar}
-            style={styles.avatarContainer}
-          >
-            {avatar ? (
-              <Image source={{ uri: avatar }} style={styles.avatar} />
-            ) : (
-              <Ionicons name="person" size={48} color={colors.primary} />
-            )}
-            <View
-              style={[
-                styles.editAvatarButton,
-                { backgroundColor: colors.primary },
-              ]}
+      <View style={{ paddingHorizontal: 20 }}>
+        <HeaderGoBack showArrowBack={true} withProfile={false} />
+        {/* <ScrollView contentContainerStyle={styles.scrollContent}> */}
+        <View style={{ paddingTop: 120 }}>
+          <View style={[styles.header, { backgroundColor: colors.bg02 }]}>
+            <TouchableOpacity
+              onPress={handleChangeAvatar}
+              style={styles.avatarContainer}
             >
-              <Ionicons name="camera" size={16} color={colors.white} />
+              {avatar ? (
+                <Image source={{ uri: avatar }} style={styles.avatar} />
+              ) : (
+                <Icon
+                  name="account-circle"
+                  size={70}
+                  color={String(colors.green)}
+                />
+              )}
+              <View
+                style={[
+                  styles.editAvatarButton,
+                  { backgroundColor: colors.pink },
+                ]}
+              >
+                <Icon name="camera" size={16} color={String(colors.white)} />
+              </View>
+            </TouchableOpacity>
+            <View style={styles.userInfo}>
+              {isEdit ? (
+                <View style={{ width: "100%" }}>
+                  <View
+                    style={{
+                      width: "100%",
+                      backgroundColor: colors.bg01,
+                      borderRadius: 16,
+                    }}
+                  >
+                    <Input
+                      value={name ?? ""}
+                      onChangeText={setName}
+                      placeholder={translate("profile.user")}
+                    />
+                  </View>
+                  <Button style={{ marginTop: 16 }} onPress={handleSave}>
+                    Save
+                  </Button>
+                </View>
+              ) : (
+                <>
+                  <Typography
+                    style={StyleSheet.flatten([
+                      styles.userName,
+                      { color: colors.text01 },
+                    ])}
+                  >
+                    {name}
+                  </Typography>
+
+                  <TouchableOpacity onPress={() => setIsEdit(true)}>
+                    <Icon name="edit" size={16} color={String(colors.green)} />
+                  </TouchableOpacity>
+                </>
+              )}
             </View>
-          </TouchableOpacity>
-          <View style={styles.userInfo}>
-            <Typography
-              style={StyleSheet.flatten([
-                styles.userName,
-                { color: colors.text01 },
-              ])}
-            >
-              {translate("profile.user")}
-            </Typography>
-            <Typography
-              style={StyleSheet.flatten([
-                styles.userEmail,
-                { color: colors.text02 },
-              ])}
-            >
-              ivan@example.com
-            </Typography>
+          </View>
+
+          <View
+            style={[
+              styles.statisticsContainer,
+              { backgroundColor: colors.bg02 },
+            ]}
+          >
+            {renderStatItem(
+              taskStore.tasks.length,
+              translate("profile.stats.total")
+            )}
+            {renderStatItem(
+              taskStore.completedTasks.length,
+              translate("profile.stats.completed")
+            )}
+            {renderStatItem(
+              taskStore.activeTasks.length,
+              translate("profile.stats.inProgress")
+            )}
+          </View>
+
+          <View style={styles.menuContainer}>
+            {menuItems.map((item) =>
+              renderMenuItem(item.icon, item.title, item.onPress)
+            )}
           </View>
         </View>
-
-        <View
-          style={[styles.statisticsContainer, { backgroundColor: colors.bg02 }]}
-        >
-          {renderStatItem(
-            taskStore.tasks.length,
-            translate("profile.stats.total")
-          )}
-          {renderStatItem(
-            taskStore.completedTasks.length,
-            translate("profile.stats.completed")
-          )}
-          {renderStatItem(
-            taskStore.activeTasks.length,
-            translate("profile.stats.inProgress")
-          )}
-        </View>
-
-        <View style={styles.menuContainer}>
-          {menuItems.map((item) =>
-            renderMenuItem(item.icon, item.title, item.onPress)
-          )}
-        </View>
-
-        <Button
-          color="danger"
-          onPress={handleLogout}
-          style={styles.logoutButton}
-        >
-          {translate("profile.logout")}
-        </Button>
-      </ScrollView>
+        {/* </ScrollView> */}
+      </View>
     </SafeAreaView>
   );
 });
@@ -236,11 +232,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    padding: 16,
+    paddingTop: 20,
   },
   header: {
     padding: 20,
     borderRadius: 10,
+    marginBottom: 20,
   },
   avatarContainer: {
     position: "relative",
@@ -263,11 +260,13 @@ const styles = StyleSheet.create({
   },
   userInfo: {
     marginLeft: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 20,
   },
   userName: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 4,
   },
   userEmail: {
     fontSize: 16,

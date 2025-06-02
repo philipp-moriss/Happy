@@ -1,24 +1,15 @@
-import React, { useEffect, useState } from "react";
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  SafeAreaView,
-  ActivityIndicator,
-} from "react-native";
-import { observer } from "mobx-react-lite";
-import { useWindowDimensions } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { observer } from "mobx-react-lite";
+import React, { useEffect } from "react";
+import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
 
-import { useStore } from "../../provider";
-import { useTheme } from "../../shared/hooks/use-theme";
-import Typography from "../../shared/components/typography";
-import { PieChart } from "../../shared/components/charts/PieChart";
 import { ActivityChart } from "@/src/shared/components/charts/ActivityChart";
+import useTheme from "@/src/shared/hooks/use-theme/use-theme";
+import { useStore } from "../../provider";
+import { PieChart } from "../../shared/components/charts/PieChart";
+import Typography from "../../shared/components/typography";
 import useTranslate from "../../shared/localization/use-translate";
-import { queryMistralAI } from "@/src/shared/api/ai";
-import Button from "@/src/shared/components/button";
-import { ProgressChart } from "@/src/shared/components/charts/ProgressChart";
+import HeaderGoBack from "@/src/shared/components/header-go-back/header-go-back";
 
 // Компонент карточки категории
 function CategoryStatCard({
@@ -108,10 +99,7 @@ const CATEGORY_META: Record<
 export const StatisticsScreen = observer(() => {
   const { taskStore } = useStore();
   const { colors } = useTheme();
-  const { width } = useWindowDimensions();
   const { translate } = useTranslate();
-  const [isLoading, setIsLoading] = useState(false);
-  const [statistics, setStatistics] = useState<any>(null);
 
   useEffect(() => {
     taskStore.fetchTasks();
@@ -130,33 +118,6 @@ export const StatisticsScreen = observer(() => {
       value: tasks.length,
       color: colorsObject[name as keyof typeof colorsObject] ?? "#CCCCCC",
     }));
-  };
-
-  const getCompletionRate = () => {
-    const total = taskStore.tasks.length;
-    const completed = taskStore.completedTasks.length;
-    return total > 0 ? (completed / total) * 100 : 0;
-  };
-
-  const getRandomColor = () => {
-    const letters = "0123456789ABCDEF";
-    let color = "#";
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  };
-
-  const getStatistics = () => {
-    setIsLoading(true);
-    queryMistralAI(JSON.stringify(taskStore.tasks))
-      .then((data) => {
-        console.log(data);
-        setStatistics(data);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
   };
 
   const chartData = getTasksByCategory();
@@ -184,72 +145,56 @@ export const StatisticsScreen = observer(() => {
     };
   });
 
-  // Функция для рандомного совета
-  function getRandomAdvice() {
-    const advices = categoryStats.map((c) => c.advice).filter(Boolean);
-    return advices.length > 0
-      ? advices[Math.floor(Math.random() * advices.length)]
-      : "";
-  }
-  const [randomAdvice, setRandomAdvice] = useState("");
-
   return (
-    <SafeAreaView
-      style={[styles.container, { backgroundColor: colors.background }]}
-    >
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <View style={{ marginBottom: 16 }}>
-          <Typography style={styles.title}>Statistics</Typography>
-          <Typography style={styles.subtitle}>
-            Task category distribution
-          </Typography>
-        </View>
-        {categoryStats.map((cat, index) => (
-          <CategoryStatCard {...cat} key={index + cat.key + "123"} />
-        ))}
-        <Button
-          style={{ marginVertical: 8 }}
-          onPress={() => setRandomAdvice(getRandomAdvice())}
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.bg01 }]}>
+      <View style={{ paddingHorizontal: 20 }}>
+        <HeaderGoBack title="Statistics" showArrowBack={false} />
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
         >
-          <Typography>Рандом совет</Typography>
-        </Button>
-        {randomAdvice ? (
-          <Typography style={styles.randomAdvice}>{randomAdvice}</Typography>
-        ) : null}
-        <View style={[styles.chartContainer, { backgroundColor: colors.card }]}>
-          <Typography style={styles.chartTitle}>
-            Category Distribution
-          </Typography>
-          {hasData ? (
-            <>
-              <PieChart data={chartData} />
-            </>
-          ) : (
-            <View style={styles.emptyState}>
-              <Typography style={styles.emptyStateText}>
-                {translate("statistics.noData")}
-              </Typography>
-            </View>
-          )}
-        </View>
-        <View style={[styles.chartContainer, { backgroundColor: colors.card }]}>
-          <Typography style={styles.chartTitle}>
-            {translate("statistics.activity")}
-          </Typography>
+          {categoryStats.map((cat, index) => (
+            <CategoryStatCard {...cat} key={index + cat.key + "123"} />
+          ))}
+          <View
+            style={[styles.chartContainer, { backgroundColor: colors.bg02 }]}
+          >
+            <Typography style={styles.chartTitle}>
+              Category Distribution
+            </Typography>
+            {hasData ? (
+              <>
+                <PieChart data={chartData} />
+              </>
+            ) : (
+              <View style={styles.emptyState}>
+                <Typography style={styles.emptyStateText}>
+                  {translate("statistics.noData")}
+                </Typography>
+              </View>
+            )}
+          </View>
+          <View
+            style={[styles.chartContainer, { backgroundColor: colors.bg02 }]}
+          >
+            <Typography style={styles.chartTitle}>
+              {translate("statistics.activity")}
+            </Typography>
 
-          {hasData ? (
-            <>
-              <ActivityChart data={chartData} />
-            </>
-          ) : (
-            <View style={styles.emptyState}>
-              <Typography style={styles.emptyStateText}>
-                {translate("statistics.noData")}
-              </Typography>
-            </View>
-          )}
-        </View>
-      </ScrollView>
+            {hasData ? (
+              <>
+                <ActivityChart data={chartData} />
+              </>
+            ) : (
+              <View style={styles.emptyState}>
+                <Typography style={styles.emptyStateText}>
+                  {translate("statistics.noData")}
+                </Typography>
+              </View>
+            )}
+          </View>
+        </ScrollView>
+      </View>
     </SafeAreaView>
   );
 });
@@ -259,8 +204,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    padding: 16,
     paddingBottom: 100,
+    paddingTop: 20,
   },
   header: {
     padding: 24,

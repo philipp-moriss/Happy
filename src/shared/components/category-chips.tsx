@@ -3,8 +3,7 @@ import { View, StyleSheet, TouchableOpacity, ScrollView, TextStyle } from 'react
 import Typography from './typography';
 import useTheme from '../hooks/use-theme/use-theme';
 import useTranslate from '../localization/use-translate';
-
-type Category = 'hedonic' | 'eudaimonic' | 'psychological';
+import { Category } from '@/src/entity/task/types';
 
 const CATEGORIES: Category[] = [
   'hedonic',

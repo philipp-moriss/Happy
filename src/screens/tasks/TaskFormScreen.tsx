@@ -3,7 +3,6 @@ import {View, StyleSheet, ScrollView, TouchableOpacity, TextStyle} from 'react-n
 import {useNavigation} from '@react-navigation/native';
 import {observer} from 'mobx-react-lite';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import {Ionicons} from '@expo/vector-icons';
 import {useTranslation} from 'react-i18next';
 
@@ -13,6 +12,7 @@ import {TextArea} from '../../shared/components/textarea';
 import {CategoryChips} from '../../shared/components/category-chips';
 import useTheme from '../../shared/hooks/use-theme/use-theme';
 import TextInputs from "@/src/shared/components/text-input";
+import { Category } from '@/src/entity/task/types';
 
 export const TaskFormScreen = observer(() => {
     const navigation = useNavigation();
@@ -23,11 +23,8 @@ export const TaskFormScreen = observer(() => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [amount, setAmount] = useState('');
-    const [category, setCategory] = useState('');
+    const [category, setCategory] = useState<Category>('hedonic');
     const [showProgress, setShowProgress] = useState(true);
-    const [endDate, setEndDate] = useState(new Date());
-    const [isEndless, setIsEndless] = useState(false);
-    const [showDatePicker, setShowDatePicker] = useState(false);
 
     const handleSubmit = async () => {
         if (!title.trim()) return;
@@ -36,11 +33,8 @@ export const TaskFormScreen = observer(() => {
             title: title.trim(),
             description: description.trim(),
             amount: parseFloat(amount) || 0,
-            category: category.trim(),
+            category: category,
             showProgress,
-            startDate: new Date().toISOString(),
-            endDate: isEndless ? null : endDate.toISOString(),
-            isEndless,
         });
 
         navigation.goBack();
@@ -48,13 +42,6 @@ export const TaskFormScreen = observer(() => {
 
     const handleCancel = () => {
         navigation.goBack();
-    };
-
-    const handleDateChange = (event: any, selectedDate?: Date) => {
-        setShowDatePicker(false);
-        if (selectedDate) {
-            setEndDate(selectedDate);
-        }
     };
 
     return (
@@ -99,7 +86,7 @@ export const TaskFormScreen = observer(() => {
                             {t('tasks.form.category')}
                         </Typography>
                         <CategoryChips
-                            selectedCategory={category}
+                            selectedCategory={category as Category}
                             onSelectCategory={setCategory}
                         />
                     </View>
@@ -126,16 +113,6 @@ export const TaskFormScreen = observer(() => {
                     </TouchableOpacity>
                 </View>
             </ScrollView>
-
-
-            {showDatePicker && (
-                <DateTimePicker
-                    value={endDate}
-                    mode="date"
-                    display="default"
-                    onChange={handleDateChange}
-                />
-            )}
         </SafeAreaView>
     );
 });

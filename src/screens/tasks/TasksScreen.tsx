@@ -4,9 +4,10 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, SafeAreaView, ScrollView, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 import { TasksStackParamList } from '@/src/router/types';
+import HeaderGoBack from '@/src/shared/components/header-go-back/header-go-back';
 import { Task } from '../../entity/task/types';
 import { useStore } from '../../provider';
 import { Checkbox } from '../../shared/components/checkbox';
@@ -99,10 +100,8 @@ export const TasksScreen = observer(() => {
       title: randomTitles[category],
       description: '',
       amount: 1,
-      showProgress: false,
-      startDate: new Date().toISOString(),
-      isEndless: false,
       category,
+      showProgress: false,
     });
   }
 
@@ -165,21 +164,11 @@ export const TasksScreen = observer(() => {
     );
   }
 
-  const handleProfilePress = () => {
-    navigation.navigate('Profile', { screen: 'ProfileHome' });
-  }
-
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.bg01 }]}>
       <View style={styles.container}>
-        <Typography style={StyleSheet.flatten(styles.title)}>
-          Task Tracker
-        </Typography>
-        <Button
-          onPress={handleProfilePress}
-          title="Profile"
-        />
-        <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 100 }}>
+        <HeaderGoBack title="Task Tracker" showArrowBack={false}/>
+        <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 100, paddingTop: 20 }}>
           {CATEGORIES.map(renderCategoryCard)}
         </ScrollView>
       </View>
@@ -190,7 +179,6 @@ export const TasksScreen = observer(() => {
 const styles = StyleSheet.create({
   safeArea: { flex: 1 },
   container: { flex: 1, padding: 12 },
-  title: { fontSize: 28, fontWeight: '700', marginBottom: 12 },
   categoryCard: {
     borderRadius: 18,
     marginBottom: 18,

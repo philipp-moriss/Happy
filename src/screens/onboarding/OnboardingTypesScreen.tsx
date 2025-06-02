@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { Ionicons } from '@expo/vector-icons';
 
 import Typography from '../../shared/components/typography';
-import { useTheme } from '../../shared/hooks/use-theme';
+import useTheme from "@/src/shared/hooks/use-theme/use-theme";
 import { useStore } from '../../provider';
 import { AppStackParamList } from '../../router/app-navigator';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -24,10 +24,10 @@ export const OnboardingTypesScreen = observer(() => {
 
   const renderTypeCard = (type: string, icon: string, description: string) => (
     <TouchableOpacity
-      style={[styles.typeCard, { backgroundColor: colors.card }]}
+      style={[styles.typeCard, { backgroundColor: colors.bg02 }]}
       onPress={() => handleTypeSelect(type)}
     >
-      <View style={[styles.iconContainer, { backgroundColor: colors.primary + '20' }]}>
+      <View style={[styles.iconContainer, { backgroundColor: colors.primary }]}>
         <Ionicons name={icon as any} size={32} color={colors.primary} />
       </View>
       <Typography style={StyleSheet.flatten(styles.typeTitle)}>{type}</Typography>
@@ -38,7 +38,7 @@ export const OnboardingTypesScreen = observer(() => {
   );
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <View style={[styles.container, { backgroundColor: colors.bg01 }]}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <Typography style={StyleSheet.flatten(styles.title)}>Выберите тип задач</Typography>
         <Typography style={StyleSheet.flatten([styles.subtitle, { color: colors.text02 }])}>

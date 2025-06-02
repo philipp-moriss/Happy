@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, View, ScrollView, SafeAreaView, Alert } from "react-native";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../provider";
-import { useTheme } from "../../shared/hooks/use-theme";
 import Typography from "../../shared/components/typography";
 import useTranslate from "../../shared/localization/use-translate";
 import { queryMistralAI } from "@/src/shared/api/ai";
@@ -10,9 +9,8 @@ import { queryMistralAI } from "@/src/shared/api/ai";
 import { HappinessLevelCard } from "./components/HappinessLevelCard";
 import { AIAnalysisCard } from "./components/AIAnalysisCard";
 import { RecommendationCard } from "./components/RecommendationCard";
-import { BoosterGrid } from "./components/BoosterGrid";
-import { FooterAnalysis } from "./components/FooterAnalysis";
 import { Ionicons } from "@expo/vector-icons";
+import useTheme from "@/src/shared/hooks/use-theme/use-theme";
 
 export const AiInsightScreen = observer(() => {
   const { taskStore } = useStore();
@@ -132,7 +130,7 @@ export const AiInsightScreen = observer(() => {
   }
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}> 
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.bg01 }]}> 
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Карточка уровня счастья */}
         <HappinessLevelCard happinessLevel={happinessLevel} description={happinessDescription} />

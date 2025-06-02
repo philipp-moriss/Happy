@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { Ionicons } from '@expo/vector-icons';
 
 import Typography from '../../shared/components/typography';
-import { useTheme } from '../../shared/hooks/use-theme';
+import useTheme from "@/src/shared/hooks/use-theme/use-theme";
 import { useStore } from '../../provider';
 import { TextArea } from '../../shared/components/textarea';
 import { DatePicker } from '../../shared/components/date-picker';
@@ -41,9 +41,9 @@ export const TaskEditScreen = observer(() => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <View style={[styles.container, { backgroundColor: colors.bg01 }]}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <View style={[styles.formContainer, { backgroundColor: colors.card }]}>
+        <View style={[styles.formContainer, { backgroundColor: colors.bg02 }]}>
           <View style={styles.inputGroup}>
             <Typography style={styles.label}>Название</Typography>
             <TextArea

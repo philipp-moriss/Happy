@@ -4,7 +4,6 @@ export interface Task {
   description: string;
   amount: number;
   showProgress: boolean;
-  endDate: Date | null;
   completed: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -16,9 +15,6 @@ export interface CreateTaskDTO {
   description: string;
   amount: number;
   showProgress: boolean;
-  startDate: string;
-  endDate?: string | null;
-  isEndless: boolean;
   category: string;
 }
 
@@ -38,3 +34,5 @@ export interface TaskFilters {
   category?: string;
   search?: string;
 } 
+
+export type Category = 'hedonic' | 'eudaimonic' | 'psychological';

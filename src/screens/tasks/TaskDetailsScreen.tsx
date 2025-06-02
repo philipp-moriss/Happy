@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { Ionicons } from '@expo/vector-icons';
 
 import Typography from '../../shared/components/typography';
-import { useTheme } from '../../shared/hooks/use-theme';
+import useTheme from "@/src/shared/hooks/use-theme/use-theme";
 import { useStore } from '../../provider';
 import { Task } from '../../entity/task/types';
 
@@ -31,12 +31,12 @@ export const TaskDetailsScreen = observer(() => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <View style={[styles.container, { backgroundColor: colors.bg01 }]}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <View style={[styles.header, { backgroundColor: colors.card }]}>
+      <View style={[styles.header, { backgroundColor: colors.bg02 }]}>
           <View style={styles.titleContainer}>
             <Typography style={styles.title}>{task.title}</Typography>
-            <View style={[styles.statusBadge, { backgroundColor: task.completed ? colors.success : colors.warning }]}>
+            <View style={[styles.statusBadge, { backgroundColor: task.completed ? colors.green : colors.yellow }]}>
               <Typography style={styles.statusText}>
                 {task.completed ? 'Завершено' : 'В процессе'}
               </Typography>
@@ -79,7 +79,7 @@ export const TaskDetailsScreen = observer(() => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[styles.actionButton, { backgroundColor: colors.error }]}
+            style={[styles.actionButton, { backgroundColor: colors.red }]}
             onPress={handleDelete}
           >
             <Ionicons name="trash-outline" size={24} color="#FFFFFF" />
