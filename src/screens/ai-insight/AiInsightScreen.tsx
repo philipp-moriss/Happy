@@ -5,11 +5,10 @@ import { useStore } from "../../provider";
 import Typography from "../../shared/components/typography";
 import useTranslate from "../../shared/localization/use-translate";
 import { queryMistralAI } from "@/src/shared/api/ai";
-// Импорт новых карточек
+
 import { HappinessLevelCard } from "./components/HappinessLevelCard";
 import { AIAnalysisCard } from "./components/AIAnalysisCard";
 import { RecommendationCard } from "./components/RecommendationCard";
-import { Ionicons } from "@expo/vector-icons";
 import useTheme from "@/src/shared/hooks/use-theme/use-theme";
 
 export const AiInsightScreen = observer(() => {
@@ -19,9 +18,6 @@ export const AiInsightScreen = observer(() => {
   const [isLoading, setIsLoading] = useState(false);
   const [analysisStatus, setAnalysisStatus] = useState<'pending' | 'complete'>('pending');
   const [insight, setInsight] = useState('');
-  const [randomAdvice, setRandomAdvice] = useState('');
-  const [isCooldown, setIsCooldown] = useState(false);
-  const [nextAnalysis, setNextAnalysis] = useState('Завтра в 9:00');
 
   useEffect(() => {
     taskStore.fetchTasks();
@@ -65,36 +61,6 @@ export const AiInsightScreen = observer(() => {
     },
   ];
 
-  const boosters = [
-    {
-      icon: "sunny-outline" as keyof typeof Ionicons.glyphMap,
-      label: "Погреться на солнце",
-      color: "#FFF7D6",
-      effect: "+0.2 boost",
-      onPress: () => Alert.alert("Совет", "Выйдите на улицу и подышите свежим воздухом!"),
-    },
-    {
-      icon: "walk-outline" as keyof typeof Ionicons.glyphMap,
-      label: "Прогуляться",
-      color: "#E6F0FF",
-      effect: "+0.3 boost",
-      onPress: () => Alert.alert("Совет", "Сделайте короткую прогулку!"),
-    },
-    {
-      icon: "medkit-outline" as keyof typeof Ionicons.glyphMap,
-      label: "5 мин. медитации",
-      color: "#E6FFE6",
-      effect: "+0.4 boost",
-      onPress: () => Alert.alert("Совет", "Попробуйте дыхательную практику!"),
-    },
-    {
-      icon: "call-outline" as keyof typeof Ionicons.glyphMap,
-      label: "Позвонить другу",
-      color: "#FFE6E6",
-      effect: "+0.5 boost",
-      onPress: () => Alert.alert("Совет", "Свяжитесь с близким человеком!"),
-    },
-  ];
 
   // AI анализ (запрос к ИИ)
   function handleAnalyze() {
@@ -110,23 +76,6 @@ export const AiInsightScreen = observer(() => {
         setAnalysisStatus('pending');
       })
       .finally(() => setIsLoading(false));
-  }
-
-  // Рандомный совет (пример)
-  function handleRandomAdvice() {
-    const advices = [
-      "Попробуйте новое хобби!",
-      "Позвоните другу прямо сейчас!",
-      "Сделайте короткую медитацию.",
-      "Погуляйте на свежем воздухе.",
-      "Запланируйте приятное событие!",
-    ];
-    setRandomAdvice(advices[Math.floor(Math.random() * advices.length)]);
-  }
-
-  // Повторный анализ (футер)
-  function handleReanalyze() {
-    if (!isCooldown) handleAnalyze();
   }
 
   return (
@@ -147,9 +96,6 @@ export const AiInsightScreen = observer(() => {
         {recommendations.map((rec, i) => (
           <RecommendationCard key={i} {...rec} />
         ))}
-
-        {/* <Typography style={styles.sectionTitle}>Быстрые бустеры счастья</Typography>
-        <BoosterGrid boosters={boosters} /> */}
       </ScrollView>
     </SafeAreaView>
   );
