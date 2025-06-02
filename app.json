@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "walletKeeper",
-    "slug": "walletKeeper",
+    "name": "Happiness Tracker",
+    "slug": "happiness-tracker",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/images/app-image/icon.png",
@@ -24,7 +24,7 @@
     },
     "splash": {
       "image": "./src/assets/images/app-image/icon.png",
-      "backgroundColor": "#202020",
+      "backgroundColor": "#20C997",
       "resizeMode": "contain"
     },
     "plugins": [
@@ -34,7 +34,7 @@
         {
           "image": "./src/assets/images/app-image/icon.png",
           "resizeMode": "contain",
-          "backgroundColor": "#202020"
+          "backgroundColor": "#20C997"
         }
       ],
       "expo-localization"

@@ -163,7 +163,7 @@
     "randomButton": "Рандомный совет"
   },
   "taskScreen": {
-    "title": "Трекер задач",
+    "title": "Журнал задач",
     "categories": {
       "eudaimonic": "Эвдемонические",
       "hedonic": "Гедонические",

@@ -154,7 +154,7 @@
     "randomButton": "Random advice"
   },
   "taskScreen": {
-    "title": "Task Tracker",
+    "title": "Task Journal",
     "categories": {
       "eudaimonic": "Eudaimonic",
       "hedonic": "Hedonic",
