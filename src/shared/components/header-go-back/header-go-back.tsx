@@ -81,7 +81,7 @@ const HeaderGoBack = ({
           <TouchableOpacity onPress={handleProfilePress}>
             {
               user?.avatar ? (
-                <Image source={{ uri: user.avatar }} style={{ width: 40, height: 40, borderRadius: 20 }} />
+                <Image source={{ uri: user.avatar }} radius={50} style={{ width: 40, height: 40 }} />
               ) : (
                 <Icon
                   name="account-circle"
