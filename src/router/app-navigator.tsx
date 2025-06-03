@@ -7,6 +7,7 @@ import { OnboardingGoalsScreen } from '../screens/onboarding/OnboardingGoalsScre
 import { OnboardingTestScreen } from '../screens/onboarding/OnboardingTestScreen';
 import { ProfileNavigator } from './profile-navigator';
 import useTranslate from '../shared/localization/use-translate';
+import useUpdate from '../shared/hooks/useUpdate';
 
 export type AppStackParamList = {
   Main: undefined;
@@ -24,6 +25,8 @@ export function AppNavigator() {
   const isFirstLaunch = true;
 
   const { setUpLanguage } = useTranslate();
+
+  useUpdate()
 
   useEffect(() => {
     setUpLanguage();

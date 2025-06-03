@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Happiness Tracker",
-    "slug": "happiness-tracker",
+    "name": "Happy Journey Ai",
+    "slug": "happy-journey-",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/images/app-image/icon.png",
@@ -9,7 +9,11 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false,
+      "bundleIdentifier": "com.ponyweb.happy.journey",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -41,6 +45,21 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "0bd43b24-1036-48cc-8976-af6e4bc19e32"
+      }
+    },
+    "owner": "pony-web",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/0bd43b24-1036-48cc-8976-af6e4bc19e32"
     }
   }
 }
