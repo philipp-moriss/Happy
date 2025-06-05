@@ -12,7 +12,8 @@
       "supportsTablet": false,
       "bundleIdentifier": "com.ponyweb.happy.journey",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSPhotoLibraryUsageDescription": "We request access to your photos so you can select an image to be stored locally on your device and used only within the app. For example, you can add a photo to a note or personalize your profile. Your photos never leave your device and are not shared with third parties."
       }
     },
     "android": {
